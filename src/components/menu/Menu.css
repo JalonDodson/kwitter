@@ -1,20 +1,39 @@
-#menu {
-  background-color: lightskyblue;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1em;
-  border-radius: 1em;
+@import url("https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&display=swap");
+
+#bar {
+  color: rgba(0, 0, 0, 0.897);
+  border-radius: 10px;
 }
 
-#menu-links {
-  display: flex;
-  padding-left: 1em;
+#link {
+  margin-right: 2.5%;
 }
 
-#menu-links a {
-  padding-right: 0.5em;
-  color: darkblue;
-  text-decoration: underline;
-  cursor: pointer;
+#link:link {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+#link:visited {
+  color: rgb(0, 0, 0);
+}
+
+h3 {
+  font-weight: normal;
+}
+
+#Kwittext {
+  font-family: "Crete Round", serif;
+  text-align: center;
+  color: skyblue;
+  font-size: 50px;
+}
+
+#simplicity {
+  color: gray;
+  font-family: "Crete Round", serif;
+  font-style: italic;
+  font-size: 10px;
+  margin-top: -1.25%;
+  text-align: center;
 }
