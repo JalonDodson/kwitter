@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProptTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./Menu.css";
@@ -37,6 +37,17 @@ const textStyle = makeStyles((theme) => ({
 export const Menu = ({ isAuthenticated, logout }) => {
   const classes = useStyles();
   const text = textStyle();
+
+  // useEffect(() => {
+  //   console.log(isAuthenticated);
+  // })
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+    logout();
+    console.log(isAuthenticated);
+  };
+
   return (
     <div id="menu">
       <div className={classes.root}>
@@ -72,9 +83,9 @@ export const Menu = ({ isAuthenticated, logout }) => {
                   id="logout-btn"
                   color="inherit"
                   href="/"
-                  onClick={logout}
+                  onClick={handleLogout}
                 >
-                  <h3>Log Out</h3>
+                  Log Out
                 </Button>
               </Toolbar>
             </AppBar>
