@@ -5,6 +5,9 @@ export const LOGIN = "AUTH/LOGIN";
 export const LOGIN_SUCCESS = "AUTH/LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "AUTH/LOGIN_FAILURE";
 export const LOGOUT = "AUTH/LOGOUT";
+export const REGISTER = "AUTH/REGISTER";
+export const REGISTER_FAIL = "AUTH/REGISTER_FAIL";
+export const REGISTER_SUCCESS = "AUTH/REGISTER_SUCCESS";
 
 /*
  AUTH ACTIONS (this is a thunk....)
@@ -17,6 +20,7 @@ export const login = (credentials) => async (dispatch, getState) => {
     const payload = await api.login(credentials);
     // ℹ️ℹ️This is how you woud debug the response to a requestℹ️ℹ️
     // console.log({ result })
+    console.log(credentials, {payload});
     dispatch({ type: LOGIN_SUCCESS, payload });
   } catch (err) {
     dispatch({
@@ -31,11 +35,29 @@ export const logout = () => async (dispatch, getState) => {
     // We do not care about the result of logging out
     // as long as it succeeds
     await api.logout();
+    console.log("is this working");
+  }catch (err) {
+      console.log(err.message);
   } finally {
     /**
      * Let the reducer know that we are logged out
      */
     dispatch({ type: LOGOUT });
+    console.log("is this working");
+  }
+};
+
+export const register = (credentials) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: REGISTER });
+    const payload = await api.register(credentials);
+    // ℹ️ℹ️This is how you woud debug the response to a requestℹ️ℹ️
+    // console.log({ result })
+    dispatch({ type: REGISTER_SUCCESS, payload });
+  } catch (err) {
+    dispatch({
+      type: REGISTER_FAIL,
+    });
   }
 };
 // END AUTH ACTIONS
