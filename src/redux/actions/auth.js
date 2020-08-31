@@ -35,15 +35,13 @@ export const logout = () => async (dispatch, getState) => {
     // We do not care about the result of logging out
     // as long as it succeeds
     await api.logout();
-    console.log("is this working");
-  }catch (err) {
+  } catch (err) {
       console.log(err.message);
   } finally {
     /**
      * Let the reducer know that we are logged out
      */
     dispatch({ type: LOGOUT });
-    console.log("is this working");
   }
 };
 
@@ -51,6 +49,7 @@ export const register = (credentials) => async (dispatch, getState) => {
   try {
     dispatch({ type: REGISTER });
     const payload = await api.register(credentials);
+    console.log({ payload })
     // ℹ️ℹ️This is how you woud debug the response to a requestℹ️ℹ️
     // console.log({ result })
     dispatch({ type: REGISTER_SUCCESS, payload });

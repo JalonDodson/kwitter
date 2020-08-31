@@ -12,7 +12,6 @@ import {
 const INITIAL_STATE = {
   isAuthenticated: false,
   username: "",
-  displayName: "",
   password: "",
   loading: false,
   error: "",

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const LoginForm = ({ login, loading, error, register }) => {
+export const LoginForm = ({ login, loading, error, register, user, users }) => {
   // material-ui stuff
   const classes = useStyles();
   // end of material-ui stuff
@@ -40,15 +40,14 @@ export const LoginForm = ({ login, loading, error, register }) => {
 
   const handleSetRegister = (ev) => {
     ev.preventDefault();
-
     setRegister(true);
   };
 
   const handleLogin = (event) => {
+
     event.preventDefault();
-
-    console.log(true);
-
+    user(state.username);
+    // users()
     login(state);
   };
 

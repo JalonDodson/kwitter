@@ -67,7 +67,29 @@ class API {
     try {
       await this.axiosInstance.get("/auth/logout");
     } catch (err) {
-      console.log(err)
+      helpMeInstructor(err);
+      return err;
+    }
+  }
+
+  async users() {
+    try {
+      const result = await this.axiosInstance.get("/users?limit=9999");
+      console.log("Where am I coming from?", result);
+      return result;
+    } catch (err) {
+      helpMeInstructor(err);
+      return err;
+    }
+  }
+
+  async user(username) {
+    try {
+     const result = await this.axiosInstance.get(`/users/${username}`)
+      // const result = await this.axiosInstance.get(`/users/${username}`);
+      
+      return result;
+    } catch (err) {
       helpMeInstructor(err);
       return err;
     }
