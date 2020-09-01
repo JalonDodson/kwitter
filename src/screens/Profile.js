@@ -1,20 +1,15 @@
-import React, { createRef, useState } from "react";
+import React, { createRef, useState, useEffect } from "react";
 
 import { MenuContainer } from "../components";
+import { CardContainer } from "../components/Card";
 // import NewsFeed from '../components/NewsFeed'
+
+import Image from "../utils/like-icon.png";
 
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Divider from "@material-ui/core/Divider";
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -68,6 +63,16 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: font,
     fontSize: "25px",
   },
+  btn: {
+      margin: theme.spacing(1),
+      width: "20%",
+      textColor: "white",
+      backgroundColor: "rgba(255, 255, 255, 0.550)",
+      borderRadius: "5.25px",
+      boxShadow:
+        "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+      marginLeft: "44%",
+  },
   mind: {
     marginTop: "50%",
   },
@@ -76,11 +81,18 @@ const useStyles = makeStyles((theme) => ({
     float: "center",
     marginLeft: "40.5%",
   },
+  like: {
+    height: "30px",
+    width: "30px",
+  },
+  delete: {
+    color: "red",
+  }
 }));
 
 const fileInput = createRef();
 
-export const ProfileScreen = ({ username, user, addPhoto }) => {
+export const ProfileScreen = ({ username, user, addPhoto, addMessage, userMessages, userMsgs }) => {
   const handleUpload = (ev) => {
     ev.preventDefault();
     console.log(`Picture selected: ${fileInput.current.files[0].name}`);
@@ -95,11 +107,16 @@ export const ProfileScreen = ({ username, user, addPhoto }) => {
   // const [value, setValue] = useState('Controlled');
   const handleMsg = (ev) => {
     setMsg(ev.target.value);
-    console.log(msg);
   };
 
+  useEffect(() => {
+    userMessages(username);
+    console.log(userMsgs.messages);
+  }, [])
+
   const submitMsg = (ev) => {
-    console.log("k");
+    ev.preventDefault();
+    addMessage(msg);
   };
   const classes = useStyles();
   return (
@@ -111,7 +128,6 @@ export const ProfileScreen = ({ username, user, addPhoto }) => {
             <Typography variant="h1" id="welcome">
               Welcome to Kwitter, {user.displayName}!
             </Typography>
-            {console.log(user)}
             {user.pictureLocation !== null ? (
               <Avatar
                 className={classes.largeAvi}
@@ -164,42 +180,15 @@ export const ProfileScreen = ({ username, user, addPhoto }) => {
                 }}
                 onChange={handleMsg}
               />
+              <Button type="submit" className={classes.btn}>Post Message</Button>
             </form>
             <Divider />
             <Typography variant="h3" id="friends">
-              What are your friends talking about?
+              What you've talked about...
             </Typography>
-            <Card className={classes.cards}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  alt="Jane's Avatar"
-                  height="140"
-                  image="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
-                  title="Jane's Avatar"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Jane says..
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    I don't like the way people don't have faces. Like, if you're going to be a human, have a face!
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <IconButton size="small" color="primary">
-                  Message
-                </IconButton>
-                <Button size="small" color="primary">
-                  Delete
-                </Button>
-              </CardActions>
-            </Card>
+            {userMsgs.messages.map((x) => 
+            
+            <CardContainer message={x.text}/>)}
           </div>
         </Paper>
       </div>

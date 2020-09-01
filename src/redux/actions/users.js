@@ -4,6 +4,9 @@ export const USERS = "USERS";
 export const USER = "USER";
 export const USER_PHOTO = "USER_PHOTO";
 export const ADD_PHOTO = "ADD_PHOTO";
+export const ADD_MESSAGE = "ADD_MESSAGE";
+export const GET_MESSAGES = "GET_MESSAGES";
+export const USER_MESSAGES = "USER_MESSAGES";
 
 export const users = () => async (dispatch, getState) => {
   try {
@@ -44,6 +47,39 @@ export const addPhoto = (username, photo) => async (dispatch, getState) => {
 
     console.log({ payload });
   } catch (err) {
-    console.log(err, "yes, it's an error")
+    console.log(err, "yes, it's an error");
+  }
+};
+
+export const addMessage = (message) => async (dispatch, getState) => {
+  try {
+    const payload = await api.createMessage(message);
+    dispatch({ type: ADD_MESSAGE, payload });
+
+    console.log(message);
+  } catch (err) {
+    console.log(err, "sorry, you have an error bud.");
+  }
+};
+
+export const getMessages = () => async (dispatch, getState) => {
+  try {
+    const payload = await api.getMessages();
+    dispatch({ type: GET_MESSAGES, payload });
+
+    console.log({ payload })
+  } catch (err) {
+    console.log(err, "sorry, broski you have an error");
+  }
+}
+
+export const userMessages = (username) => async (dispatch, getState) => {
+  try {
+    const payload = await api.userMessages(username);
+    dispatch ({ type: USER_MESSAGES, payload });
+
+    console.log ({ payload });
+  } catch (err) {
+    console.log(err, "damn, dog. u got an error");
   }
 }

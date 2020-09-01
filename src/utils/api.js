@@ -128,6 +128,45 @@ class API {
       return err;
     }
   }
+  async createMessage(message) {
+    try {
+      await this.axiosInstance.post(
+        `/messages`,
+        {
+          text: message,
+        }
+      );
+    } catch (err) {
+      helpMeInstructor(err);
+      return err;
+    }
+  }
+
+  async getMessages() {
+    try {
+      const result = await this.axiosInstance.get(
+      `/messages?limit=100&offset=0`
+      )
+      return result;
+    } catch (err) {
+      helpMeInstructor(err)
+      console.log("bruh why aint u workin");
+      return err;
+    }
+  }
+
+  async userMessages(username) {
+    try {
+      const result = await this.axiosInstance.get(
+      `/messages?limit=100&offset=0&username=${username}`
+      )
+      return result;
+    } catch (err) {
+      helpMeInstructor(err)
+      console.log("bruh why aint u workin");
+      return err;
+    }
+  }
 }
 
 // WARNING.. do not touch below this line if you want to have a good day =]
