@@ -23,6 +23,13 @@ body {
   width: 100%;
 }
 
+#k-logo {
+  margin-left: 45.5%;
+  margin-bottom: -12.5%;
+  height: 200px;
+  width: 200px;
+}
+
 #inputs {
   margin-top: 15%;
   margin-left: 42.5%;

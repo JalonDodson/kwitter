@@ -42,7 +42,7 @@ export const addPhoto = (username, photo) => async (dispatch, getState) => {
     const payload = await api.addPhoto(username, photo);
     dispatch({ type: ADD_PHOTO, payload });
 
-    console.log(photo, username, { payload });
+    console.log({ payload });
   } catch (err) {
     console.log(err, "yes, it's an error")
   }

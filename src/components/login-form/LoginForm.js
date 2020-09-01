@@ -44,7 +44,6 @@ export const LoginForm = ({ login, loading, error, register, user, users }) => {
   };
 
   const handleLogin = (event) => {
-
     event.preventDefault();
     user(state.username);
     // users()
@@ -76,6 +75,11 @@ export const LoginForm = ({ login, loading, error, register, user, users }) => {
 
   return !isRegister ? (
     <>
+      <img
+        src={require("../../utils/logo.png")}
+        id="k-logo"
+        alt="Kwitter logo"
+      />
       <form className={classes.root} id="login-form" onSubmit={handleLogin}>
         <div id="inputs">
           {userRegistered ? (

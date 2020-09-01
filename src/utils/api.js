@@ -123,7 +123,6 @@ class API {
           },
         }
       );
-      console.log("banana");
     } catch (err) {
       helpMeInstructor(err);
       return err;
