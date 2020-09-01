@@ -12,7 +12,6 @@ const KWITTER = {
 };
 
 window.KWITTER = KWITTER;
-
 export const App = () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>

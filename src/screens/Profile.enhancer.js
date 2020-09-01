@@ -13,4 +13,4 @@ const mapDispatchToProps = {
   userMessages,
 };
 
-export const enhancer = connect(mapStateToProps, mapDispatchToProps); 
+export const enhancer = connect(mapStateToProps, mapDispatchToProps);

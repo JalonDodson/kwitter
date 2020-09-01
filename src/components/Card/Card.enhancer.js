@@ -6,7 +6,6 @@ const mapStateToProps = (state) => ({
   messages: state.messages,
 });
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
-export const enhancer = connect(mapStateToProps, mapDispatchToProps); 
+export const enhancer = connect(mapStateToProps, mapDispatchToProps);

@@ -67,19 +67,19 @@ export const getMessages = () => async (dispatch, getState) => {
     const payload = await api.getMessages();
     dispatch({ type: GET_MESSAGES, payload });
 
-    console.log({ payload })
+    console.log({ payload });
   } catch (err) {
     console.log(err, "sorry, broski you have an error");
   }
-}
+};
 
 export const userMessages = (username) => async (dispatch, getState) => {
   try {
     const payload = await api.userMessages(username);
-    dispatch ({ type: USER_MESSAGES, payload });
+    dispatch({ type: USER_MESSAGES, payload });
 
-    console.log ({ payload });
+    console.log({ payload });
   } catch (err) {
     console.log(err, "damn, dog. u got an error");
   }
-}
+};
