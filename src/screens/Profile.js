@@ -1,10 +1,9 @@
-import React, { createRef, useState, useEffect } from "react";
+import React, { createRef, useState, useEffect} from "react";
 
 import { MenuContainer } from "../components";
 import { CardContainer } from "../components/Card";
 // import NewsFeed from '../components/NewsFeed'
 
-import Image from "../utils/like-icon.png";
 
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,6 +14,8 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 
 import "./Profile.css";
+import { nanoid } from "nanoid";
+
 const font = "'Amatic SC', Arial";
 
 const useStyles = makeStyles((theme) => ({
@@ -64,14 +65,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "25px",
   },
   btn: {
-      margin: theme.spacing(1),
-      width: "20%",
-      textColor: "white",
-      backgroundColor: "rgba(255, 255, 255, 0.550)",
-      borderRadius: "5.25px",
-      boxShadow:
-        "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-      marginLeft: "44%",
+    margin: theme.spacing(1),
+    width: "20%",
+    textColor: "white",
+    backgroundColor: "rgba(255, 255, 255, 0.550)",
+    borderRadius: "5.25px",
+    boxShadow:
+      "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+    marginLeft: "44%",
   },
   mind: {
     marginTop: "50%",
@@ -87,20 +88,27 @@ const useStyles = makeStyles((theme) => ({
   },
   delete: {
     color: "red",
-  }
+  },
 }));
 
 const fileInput = createRef();
 
-export const ProfileScreen = ({ username, user, addPhoto, addMessage, userMessages, userMsgs }) => {
-  const handleUpload = (ev) => {
-    ev.preventDefault();
-    console.log(`Picture selected: ${fileInput.current.files[0].name}`);
-    addPhoto(username, fileInput.current.files[0]);
-  };
+export const ProfileScreen = ({
+  username,
+  user,
+  addPhoto,
+  addMessage,
+  userMessages,
+  messages,
+  users,
+}) => {
+  // const handleUpload = (ev) => {
+  //   ev.preventDefault();
+  //   console.log(`Picture selected: ${fileInput.current.files[0].name}`);
+  //   addPhoto(username, fileInput.current.files[0]);
+  // };
 
   const [msg, setMsg] = useState("");
-
   const pictureURL = (username) =>
     `https://kwitter-api.herokuapp.com/users/${username}/picture`;
 
@@ -108,17 +116,22 @@ export const ProfileScreen = ({ username, user, addPhoto, addMessage, userMessag
   const handleMsg = (ev) => {
     setMsg(ev.target.value);
   };
+  const [cnt, setCnt] = useState(0);
 
   useEffect(() => {
     userMessages(username);
-    console.log(userMsgs.messages);
-  }, [])
+    console.log("test");
+  }, [cnt])
 
   const submitMsg = (ev) => {
     ev.preventDefault();
+
     addMessage(msg);
+    setCnt((c) => c + 1);
   };
+
   const classes = useStyles();
+
   return (
     <>
       <MenuContainer />
@@ -180,15 +193,18 @@ export const ProfileScreen = ({ username, user, addPhoto, addMessage, userMessag
                 }}
                 onChange={handleMsg}
               />
-              <Button type="submit" className={classes.btn}>Post Message</Button>
+              <Button type="submit" className={classes.btn}>
+                Post Message
+              </Button>
             </form>
             <Divider />
             <Typography variant="h3" id="friends">
               What you've talked about...
             </Typography>
-            {userMsgs.messages.map((x) => 
-            
-            <CardContainer message={x.text}/>)}
+            {users.messages &&
+              users.messages.map((x) => {
+                return <CardContainer key={nanoid()} message={x.text} />;
+              })}
           </div>
         </Paper>
       </div>

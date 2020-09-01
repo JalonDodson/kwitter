@@ -58,7 +58,7 @@ export const UserCard = ({ user, username, message }) => {
               </CardActionArea>
               <CardActions>
                 <IconButton size="small" color="primary">
-                  <img src={Image} className={classes.like} />
+                  <img src={Image} className={classes.like} alt="like icon"/>
                 </IconButton>
                 <IconButton size="small" color="primary">
                   <ClearIcon className={classes.delete}/>
