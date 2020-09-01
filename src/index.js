@@ -4,9 +4,10 @@ import * as serviceWorker from "./serviceWorker";
 import { App } from "./App";
 
 render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <App />
-  </React.StrictMode>,
+  // </React.StrictMode>
+  ,
   document.getElementById("root")
 );
 

@@ -11,7 +11,9 @@ class API {
     const axiosInstance = axios.create({
       baseURL: "https://kwitter-api.herokuapp.com/",
       timeout: 30000,
-      headers: { Authorization: `Bearer ${getToken()}` },
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
     });
 
     // Add a request interceptor to attach a
@@ -85,10 +87,43 @@ class API {
 
   async user(username) {
     try {
-     const result = await this.axiosInstance.get(`/users/${username}`)
+      const result = await this.axiosInstance.get(`/users/${username}`);
       // const result = await this.axiosInstance.get(`/users/${username}`);
-      
+
       return result;
+    } catch (err) {
+      helpMeInstructor(err);
+      return err;
+    }
+  }
+
+  async getPhoto(username) {
+    try {
+      const result = await this.axiosInstance.get(`/users/${username}/picture`);
+
+      return result;
+    } catch (err) {
+      helpMeInstructor(err);
+      return err;
+    }
+  }
+
+  async addPhoto(username, photo) {
+    try {
+      await this.axiosInstance.put(
+        `/users/${username}/picture`,
+        photo,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "PUT",
+            "Access-Control-Allow-Headers": "Authorization, Content-Type",
+            "Access-Control-Allow-Credentials": true,
+          },
+        }
+      );
+      console.log("banana");
     } catch (err) {
       helpMeInstructor(err);
       return err;

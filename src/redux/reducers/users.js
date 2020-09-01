@@ -1,5 +1,5 @@
 // TODO: implement
-import { USERS, USER } from "../actions";
+import { USERS, USER, USER_PHOTO } from "../actions";
 
 // INITIAL STATE
 const INITIAL_STATE = {
@@ -14,10 +14,14 @@ export const usersReducer = (state = INITIAL_STATE, action) => {
         ...INITIAL_STATE,
         users: action.payload,
       };
-      case USER:
+    case USER:
       return {
         ...INITIAL_STATE,
         user: action.payload,
+      };
+    case USER_PHOTO:
+      return {
+        ...INITIAL_STATE,
       };
     default:
       return state;

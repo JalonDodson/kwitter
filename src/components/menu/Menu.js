@@ -8,13 +8,13 @@ import Menu from "@material-ui/core/Menu";
 import "fontsource-roboto";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
+import Avatar from "@material-ui/core/Avatar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import MenuItem from "@material-ui/core/MenuItem";
 import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -80,74 +80,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const MenuBar = ({ isAuthenticated, logout }) => {
+export const MenuBar = ({ isAuthenticated, logout, user }) => {
+  // material-ui stuff
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
+  // api stuff
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+  const pictureURL = (username) =>
+    `https://kwitter-api.herokuapp.com/users/${username}/picture`;
 
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem><Link to="/">Profile</Link></MenuItem>
-      <MenuItem onClick={logout}>Log Out</MenuItem>
-    </Menu>
-  );
 
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
-
-  {
-    return !isAuthenticated ? (
+  return !isAuthenticated ? (
       <>
         <Typography variant="h6" id="Kwittext" className={classes.main}>
           Kwitter
@@ -157,7 +111,7 @@ export const MenuBar = ({ isAuthenticated, logout }) => {
         </Typography>
       </>
     ) : (
-      <div className={classes.grow}>
+      <>
         <AppBar position="static" id="main-bar">
           <Toolbar>
             <Typography className={classes.title} variant="h6" noWrap>
@@ -186,17 +140,35 @@ export const MenuBar = ({ isAuthenticated, logout }) => {
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >
-                <AccountCircle />
+                {user.pictureLocation !== null ? (
+                  <Avatar
+                    alt={user.displayName}
+                    src={pictureURL(user.username)}
+                  ></Avatar>
+                ) : (
+                  <Avatar>{user.displayName[0].toUpperCase()}</Avatar>
+                )}
               </IconButton>
             </div>
           </Toolbar>
         </AppBar>
-        {renderMobileMenu}
-        {renderMenu}
-      </div>
+        <Menu
+          anchorEl={anchorEl}
+          keepMounted
+          id={menuId}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          transformOrigin={{ vertical: "top", horizontal: "right" }}
+          open={isMenuOpen}
+          onClose={handleMenuClose}
+        >
+          <MenuItem>
+            <Link to="/">Profile</Link>
+          </MenuItem>
+          <MenuItem onClick={logout}>Log Out</MenuItem>
+        </Menu>
+      </>
     );
   }
-};
 
 Menu.defaultProps = {
   isAuthenticated: false,
