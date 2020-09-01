@@ -7,7 +7,6 @@ body {
   background-image: url("../../utils/turtle-bg.jpg");
   background-attachment: fixed;
   background-size: cover;
-  overflow: hidden;
 }
 
 #login-btn {
