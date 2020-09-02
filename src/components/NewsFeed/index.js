@@ -1,4 +1,4 @@
 import { NewsFeed } from './NewsFeed';
-import { enhacer } from './NewsFeed.enhancer';
+import { enhancer } from './NewsFeed.enhancer';
 
-export NewsBoard = enhacer(NewsFeed);
+export NewsBoard = enhancer(NewsFeed);

@@ -97,17 +97,6 @@ class API {
     }
   }
 
-  async getPhoto(username) {
-    try {
-      const result = await this.axiosInstance.get(`/users/${username}/picture`);
-
-      return result;
-    } catch (err) {
-      helpMeInstructor(err);
-      return err;
-    }
-  }
-
   async addPhoto(username, photo) {
     try {
       await this.axiosInstance.put(
@@ -128,6 +117,7 @@ class API {
       return err;
     }
   }
+
   async createMessage(message) {
     try {
       await this.axiosInstance.post(
@@ -141,6 +131,15 @@ class API {
       return err;
     }
   }
+
+async deleteMessage(messageId) {
+  try {
+    await this.axiosInstance.delete(`/messages/${messageId}`);
+  } catch (err) {
+    helpMeInstructor(err)
+    return err;
+  }
+}
 
   async getMessages() {
     try {

@@ -12,9 +12,9 @@ import { userCardStyles } from "../../hooks/userCardStyles";
 
 import Image from "../../utils/like-icon.png";
 
-export const UserCard = ({ user, username, message }) => {
-  const pictureURL = (username) =>
-    `https://kwitter-api.herokuapp.com/users/${username}/picture`;
+export const UserCard = ({ user, username, message, del, id }) => {
+  const getPhoto = (username) => `https://kwitter-api.herokuapp.com/users/${username}/picture`
+  
 
   const classes = userCardStyles();
 
@@ -25,7 +25,7 @@ export const UserCard = ({ user, username, message }) => {
           component="img"
           alt={`${user.displayName}'s profile picture`}
           height="120"
-          image={pictureURL(username)}
+          image={getPhoto(username)}
           title={`${user.displayName}'s profile picture`}
         />
         <CardContent>
@@ -41,7 +41,7 @@ export const UserCard = ({ user, username, message }) => {
         <IconButton size="small" color="primary">
           <img src={Image} className={classes.like} alt="like icon" />
         </IconButton>
-        <IconButton size="small" color="primary">
+        <IconButton size="small" color="primary" onClick={del}>
           <ClearIcon className={classes.delete} />
         </IconButton>
       </CardActions>
