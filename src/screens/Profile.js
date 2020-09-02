@@ -42,13 +42,14 @@ export const ProfileScreen = ({
     ev.target.value = "";
   };
 
-  const getPhoto = (username) => `https://kwitter-api.herokuapp.com/users/${username}/picture`
-  
+  const getPhoto = (username) =>
+    `https://kwitter-api.herokuapp.com/users/${username}/picture`;
+
   const [cnt, setCnt] = useState(0);
-  
+
   useEffect(() => {
     userMessages(username);
-// eslint-disable-next-line
+    // eslint-disable-next-line
   }, [cnt]);
 
   const submitMsg = (ev) => {
@@ -57,18 +58,18 @@ export const ProfileScreen = ({
     addMessage(msg);
     setCnt((c) => c + 1);
   };
-  
+
   const classes = profileStyles();
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this message?")) {
-      deleteMessage(id)
-      
+      deleteMessage(id);
+
       setCnt((c) => c + 1);
     } else {
       console.log("The message was not deleted, nothing happened.");
     }
-  }
+  };
   const enterMsg = (ev) => {
     if (ev.key === "Enter") {
       addMessage(ev.target.value);
@@ -77,7 +78,7 @@ export const ProfileScreen = ({
       ev.target.value = "";
       ev.target.blur();
     }
-  }
+  };
   return (
     <>
       <MenuContainer />
@@ -148,10 +149,17 @@ export const ProfileScreen = ({
             <Typography variant="h3" id="friends">
               What you've talked about...
             </Typography>
-            
+
             {users.messages &&
               users.messages.map((x) => {
-                return <CardContainer del={() => handleDelete(x.id)} id={x.id} key={nanoid()} message={x.text} />;
+                return (
+                  <CardContainer
+                    del={() => handleDelete(x.id)}
+                    id={x.id}
+                    key={nanoid()}
+                    message={x.text}
+                  />
+                );
               })}
           </div>
         </Paper>

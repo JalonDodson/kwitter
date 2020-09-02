@@ -13,8 +13,8 @@ import { userCardStyles } from "../../hooks/userCardStyles";
 import Image from "../../utils/like-icon.png";
 
 export const UserCard = ({ user, username, message, del, id }) => {
-  const getPhoto = (username) => `https://kwitter-api.herokuapp.com/users/${username}/picture`
-  
+  const getPhoto = (username) =>
+    `https://kwitter-api.herokuapp.com/users/${username}/picture`;
 
   const classes = userCardStyles();
 
