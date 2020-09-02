@@ -8,7 +8,7 @@
 // };
 
 // TODO: implement
-import { ADD_MESSAGE, GET_MESSAGES, USER_MESSAGES } from "../actions";
+import { ADD_MESSAGE, GET_MESSAGES, USER_MESSAGES, DELETE_MESSAGE } from "../actions";
 
 // INITIAL STATE
 const INITIAL_STATE = {
@@ -32,6 +32,10 @@ export const messagesReducer = (state = INITIAL_STATE, action) => {
         ...INITIAL_STATE,
         user: action.payload,
       };
+      case DELETE_MESSAGE: 
+      return {
+        ...INITIAL_STATE,
+      }
     default:
       return state;
   }

@@ -18,12 +18,13 @@ import { nanoid } from "nanoid";
 // const fileInput = createRef();
 
 export const ProfileScreen = ({
-  username,
-  user,
   addPhoto,
   addMessage,
+  deleteMessage,
   userMessages,
   users,
+  username,
+  user,
 }) => {
   // const handleUpload = (ev) => {
   //   ev.preventDefault();
@@ -32,8 +33,8 @@ export const ProfileScreen = ({
   // };
 
   const [msg, setMsg] = useState("");
-  const pictureURL = (username) =>
-    `https://kwitter-api.herokuapp.com/users/${username}/picture`;
+  // const pictureURL = (username) =>
+  //   `https://kwitter-api.herokuapp.com/users/${username}/picture`;
 
   const handleMsg = (ev) => {
     setMsg(ev.target.value);
@@ -41,7 +42,10 @@ export const ProfileScreen = ({
     ev.target.value = "";
   };
 
+  const getPhoto = (username) => `https://kwitter-api.herokuapp.com/users/${username}/picture`
+  
   const [cnt, setCnt] = useState(0);
+  
   useEffect(() => {
     userMessages(username);
 // eslint-disable-next-line
@@ -53,9 +57,27 @@ export const ProfileScreen = ({
     addMessage(msg);
     setCnt((c) => c + 1);
   };
-
+  
   const classes = profileStyles();
 
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this message?")) {
+      deleteMessage(id)
+      
+      setCnt((c) => c + 1);
+    } else {
+      console.log("The message was not deleted, nothing happened.");
+    }
+  }
+  const enterMsg = (ev) => {
+    if (ev.key === "Enter") {
+      addMessage(ev.target.value);
+
+      setCnt((c) => c + 1);
+      ev.target.value = "";
+      ev.target.blur();
+    }
+  }
   return (
     <>
       <MenuContainer />
@@ -69,7 +91,7 @@ export const ProfileScreen = ({
               <Avatar
                 className={classes.largeAvi}
                 alt={user.displayName}
-                src={pictureURL(user.username)}
+                src={getPhoto(username)}
               ></Avatar>
             ) : (
               <Avatar className={classes.large}>
@@ -108,13 +130,14 @@ export const ProfileScreen = ({
               <TextField
                 label="What's on your mind?"
                 multiline
-                rows={5}
+                rows={4}
                 placeholder="Here's what I'm thinking..."
                 variant="filled"
                 className={classes.mind}
                 InputProps={{
                   className: classes.multilineColor,
                 }}
+                onKeyDown={enterMsg}
                 onBlur={handleMsg}
               />
               <Button type="submit" className={classes.btn}>
@@ -125,9 +148,10 @@ export const ProfileScreen = ({
             <Typography variant="h3" id="friends">
               What you've talked about...
             </Typography>
+            
             {users.messages &&
               users.messages.map((x) => {
-                return <CardContainer key={nanoid()} message={x.text} />;
+                return <CardContainer del={() => handleDelete(x.id)} id={x.id} key={nanoid()} message={x.text} />;
               })}
           </div>
         </Paper>

@@ -7,6 +7,7 @@ export const ADD_PHOTO = "ADD_PHOTO";
 export const ADD_MESSAGE = "ADD_MESSAGE";
 export const GET_MESSAGES = "GET_MESSAGES";
 export const USER_MESSAGES = "USER_MESSAGES";
+export const DELETE_MESSAGE = "DELETE_MESSAGE";
 
 export const users = () => async (dispatch, getState) => {
   try {
@@ -35,6 +36,8 @@ export const getPhoto = (username) => async (dispatch, getState) => {
     const payload = await api.getPhoto(username);
 
     dispatch({ type: USER_PHOTO, payload });
+    console.log(payload);
+    return payload;
   } catch (err) {
     console.log(err);
   }
@@ -72,6 +75,17 @@ export const getMessages = () => async (dispatch, getState) => {
     console.log(err, "sorry, broski you have an error");
   }
 };
+
+export const deleteMessage = (id) => async (dispatch, getState) => {
+  try {
+    const payload = await api.deleteMessage(id);
+    dispatch ({ type: DELETE_MESSAGE, payload });
+
+    console.log("Message successfully deleted.");
+  } catch (err) {
+    console.log("Do you have authorization to delete this message, fam?");
+  }
+}
 
 export const userMessages = (username) => async (dispatch, getState) => {
   try {
