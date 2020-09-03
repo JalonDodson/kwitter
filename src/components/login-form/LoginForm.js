@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   loginFail: {
     color: "red",
-  }
+  },
 }));
 
 export const LoginForm = ({ login, loading, error, register, user }) => {
@@ -50,14 +50,17 @@ export const LoginForm = ({ login, loading, error, register, user }) => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    user(state.username);
 
     if (called === false) {
+      user(state.username);
       login(state);
       setCalled(true);
       setFailure(true);
     } else {
-      login(state)
+      user(state.username);
+      login(state);
+      setCalled(false);
+      setFailure(false);
     }
   };
 
@@ -102,14 +105,16 @@ export const LoginForm = ({ login, loading, error, register, user }) => {
               You have successfully registered. Please sign in!
             </Typography>
           ) : null}
-          {failure && 
-          <Typography
-          variant="overline"
-          id="login-fail"
-          className={classes.loginFail}
-        >
-          You have entered the incorrect username or password, please try again!
-        </Typography>}
+          {failure && (
+            <Typography
+              variant="overline"
+              id="login-fail"
+              className={classes.loginFail}
+            >
+              You have entered the incorrect username or password, please try
+              again!
+            </Typography>
+          )}
           <FormControl variant="outlined">
             <InputLabel htmlFor="component-outlined">Username</InputLabel>
             <OutlinedInput
