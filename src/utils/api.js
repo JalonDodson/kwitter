@@ -9,7 +9,7 @@ class API {
       https://create-react-app.dev/docs/adding-custom-environment-variables/
     */
     const axiosInstance = axios.create({
-      baseURL: "https://kwitter-api.herokuapp.com/",
+      baseURL: "https://kwitter-api.herokuapp.com",
       timeout: 30000,
       headers: {
         Authorization: `Bearer ${getToken()}`,
@@ -43,6 +43,7 @@ class API {
         username,
         password,
       });
+      console.log(result);
       return result;
     } catch (err) {
       // Instructor is logging you out because this failed
@@ -97,21 +98,29 @@ class API {
     }
   }
 
+  async getPhoto(username) {
+      await this.axiosInstance
+        .get(`/users/${username}/picture`)
+        .then(res => res)
+        .catch(function (err) {
+          helpMeInstructor(err);
+          console.log(err);
+        });
+      }
+
   async addPhoto(username, photo) {
     try {
-      await this.axiosInstance.put(
+      const result = await this.axiosInstance.put(
         `/users/${username}/picture`,
         photo,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "PUT",
-            "Access-Control-Allow-Headers": "Authorization, Content-Type",
-            "Access-Control-Allow-Credentials": true,
           },
         }
       );
+      console.log(result);
+      return result;
     } catch (err) {
       helpMeInstructor(err);
       return err;
@@ -120,35 +129,32 @@ class API {
 
   async createMessage(message) {
     try {
-      await this.axiosInstance.post(
-        `/messages`,
-        {
-          text: message,
-        }
-      );
+      await this.axiosInstance.post(`/messages`, {
+        text: message,
+      });
     } catch (err) {
       helpMeInstructor(err);
       return err;
     }
   }
 
-async deleteMessage(messageId) {
-  try {
-    await this.axiosInstance.delete(`/messages/${messageId}`);
-  } catch (err) {
-    helpMeInstructor(err)
-    return err;
+  async deleteMessage(messageId) {
+    try {
+      await this.axiosInstance.delete(`/messages/${messageId}`);
+    } catch (err) {
+      helpMeInstructor(err);
+      return err;
+    }
   }
-}
 
   async getMessages() {
     try {
       const result = await this.axiosInstance.get(
-      `/messages?limit=100&offset=0`
-      )
+        `/messages?limit=100&offset=0`
+      );
       return result;
     } catch (err) {
-      helpMeInstructor(err)
+      helpMeInstructor(err);
       console.log("bruh why aint u workin");
       return err;
     }
@@ -157,11 +163,11 @@ async deleteMessage(messageId) {
   async userMessages(username) {
     try {
       const result = await this.axiosInstance.get(
-      `/messages?limit=100&offset=0&username=${username}`
-      )
+        `/messages?limit=100&offset=0&username=${username}`
+      );
       return result;
     } catch (err) {
-      helpMeInstructor(err)
+      helpMeInstructor(err);
       console.log("bruh why aint u workin");
       return err;
     }

@@ -2,8 +2,6 @@ import api from "../../utils/api";
 
 export const USERS = "USERS";
 export const USER = "USER";
-export const USER_PHOTO = "USER_PHOTO";
-export const ADD_PHOTO = "ADD_PHOTO";
 export const ADD_MESSAGE = "ADD_MESSAGE";
 export const GET_MESSAGES = "GET_MESSAGES";
 export const USER_MESSAGES = "USER_MESSAGES";
@@ -31,28 +29,27 @@ export const user = (username) => async (dispatch, getState) => {
   }
 };
 
-export const getPhoto = (username) => async (dispatch, getState) => {
-  try {
-    const payload = await api.getPhoto(username);
+// export const getPhoto = (username) => async (dispatch, getState) => {
+//   try {
+//     const payload = await api.getPhoto(username);
 
-    dispatch({ type: USER_PHOTO, payload });
-    console.log(payload);
-    return payload;
-  } catch (err) {
-    console.log(err);
-  }
-};
+//     dispatch({ type: USER_PHOTO, payload });
+//     console.log(payload);
+//     return payload;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
-export const addPhoto = (username, photo) => async (dispatch, getState) => {
-  try {
-    const payload = await api.addPhoto(username, photo);
-    dispatch({ type: ADD_PHOTO, payload });
+// export const addPhoto = (username, photo) => async (dispatch) => {
+//   try {
+//     const payload = await api.addPhoto(username, photo);
 
-    console.log({ payload });
-  } catch (err) {
-    console.log(err, "yes, it's an error");
-  }
-};
+//     console.log({ payload });
+//   } catch (err) {
+//     console.log(err, "yes, it's an error");
+//   }
+// };
 
 export const addMessage = (message) => async (dispatch, getState) => {
   try {

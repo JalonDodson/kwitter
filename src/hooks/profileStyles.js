@@ -20,7 +20,7 @@ export const profileStyles = makeStyles((theme) => ({
       borderRadius: "5.25px",
       boxShadow:
         "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-      marginLeft: "44%",
+      marginLeft: "40%",
     },
   },
   large: {
@@ -56,21 +56,29 @@ export const profileStyles = makeStyles((theme) => ({
     borderRadius: "5.25px",
     boxShadow:
       "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-    marginLeft: "44%",
+    marginLeft: "40%",
+  },
+  photoContainer: {
+    marginLeft: "79%",
+    marginTop: "-10%",
+  },
+  photoBtn: {
+    margin: theme.spacing(1),
+    width: "50%",
+    textColor: "white",
+    backgroundColor: "rgba(255, 255, 255, 0.550)",
+    borderRadius: "5.25px",
+    boxShadow:
+      "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
   },
   mind: {
     marginTop: "50%",
   },
-  cards: {
-    maxWidth: 350,
-    float: "center",
-    marginLeft: "40.5%",
+  divider: {
+    maxWidth: 500,
+    marginLeft: "36.5%",
   },
-  like: {
-    height: "30px",
-    width: "30px",
-  },
-  delete: {
-    color: "red",
-  },
+  settings: {
+    float: "right",
+  }
 }));

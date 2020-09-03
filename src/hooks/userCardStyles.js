@@ -2,9 +2,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const userCardStyles = makeStyles((theme) => ({
   cards: {
-    maxWidth: 350,
-    float: "center",
-    marginLeft: "40.5%",
+    maxWidth: 500,
+    marginLeft: "36.5%",
   },
   like: {
     height: "30px",

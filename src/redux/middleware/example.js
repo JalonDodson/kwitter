@@ -6,8 +6,9 @@
   eg: applyMiddleware(thunk, exampleMiddleware)
   https://redux.js.org/advanced/middleware
 */
-const exampleMiddleware = (store) => (next) => (action) => {
-  return next(action);
-};
 
-export default exampleMiddleware;
+// const exampleMiddleware = (store) => (next) => (action) => {
+//   return next(action);
+// };
+
+// export default exampleMiddleware;

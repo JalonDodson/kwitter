@@ -101,6 +101,7 @@ export const MenuBar = ({ isAuthenticated, logout, user }) => {
         <MenuItem>
           <Link to="/">Profile</Link>
         </MenuItem>
+        {/* <MenuItem onClick={deleteConfirm}>Delete Profile</MenuItem> */}
         <MenuItem onClick={logout}>Log Out</MenuItem>
       </Menu>
     </>

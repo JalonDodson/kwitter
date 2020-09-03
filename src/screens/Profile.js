@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createRef } from "react";
+import api from "../utils/api";
 
 import { MenuContainer } from "../components";
 import { CardContainer } from "../components/Card";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import { profileStyles } from "../hooks/profileStyles";
+import SettingsIcon from "@material-ui/icons/Settings";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 
@@ -15,10 +19,9 @@ import "./Profile.css";
 
 import { nanoid } from "nanoid";
 
-// const fileInput = createRef();
+const fileInput = createRef();
 
 export const ProfileScreen = ({
-  addPhoto,
   addMessage,
   deleteMessage,
   userMessages,
@@ -26,26 +29,29 @@ export const ProfileScreen = ({
   username,
   user,
 }) => {
-  // const handleUpload = (ev) => {
-  //   ev.preventDefault();
-  //   console.log(`Picture selected: ${fileInput.current.files[0].name}`);
-  //   addPhoto(username, fileInput.current.files[0]);
-  // };
-
+  const [cnt, setCnt] = useState(0);
   const [msg, setMsg] = useState("");
-  // const pictureURL = (username) =>
-  //   `https://kwitter-api.herokuapp.com/users/${username}/picture`;
+  const [uploader, setUploader] = useState(false);
+  const getPhoto = (username) =>
+    `https://kwitter-api.herokuapp.com/users/${username}/picture`;
+
+  const uploadPhoto = () => {
+    const formData = new FormData();
+
+    const data = fileInput.current.files[0];
+
+    formData.append("picture", data);
+
+    api.addPhoto(username, formData);
+    
+    setUploader(false);
+  };
 
   const handleMsg = (ev) => {
     setMsg(ev.target.value);
 
     ev.target.value = "";
   };
-
-  const getPhoto = (username) =>
-    `https://kwitter-api.herokuapp.com/users/${username}/picture`;
-
-  const [cnt, setCnt] = useState(0);
 
   useEffect(() => {
     userMessages(username);
@@ -70,6 +76,11 @@ export const ProfileScreen = ({
       console.log("The message was not deleted, nothing happened.");
     }
   };
+
+  const handleSettings = (ev) => {
+    alert("This feature is not yet implemented!");
+  };
+
   const enterMsg = (ev) => {
     if (ev.key === "Enter") {
       addMessage(ev.target.value);
@@ -84,6 +95,9 @@ export const ProfileScreen = ({
       <MenuContainer />
       <div className={classes.root}>
         <Paper elevation={3} square={false}>
+          <IconButton className={classes.settings} onClick={handleSettings}>
+            <SettingsIcon fontSize="large" />
+          </IconButton>
           <div>
             <Typography variant="h1" id="welcome">
               Welcome to Kwitter, {user.displayName}!
@@ -93,40 +107,13 @@ export const ProfileScreen = ({
                 className={classes.largeAvi}
                 alt={user.displayName}
                 src={getPhoto(username)}
-              ></Avatar>
+               ></Avatar>
             ) : (
               <Avatar className={classes.large}>
                 {user.displayName[0].toUpperCase()}
               </Avatar>
             )}
-            {/* <img src={require("../utils/logo.png")} alt="Kwitter logo" /> */}
-            {/* <Paper elevation={5} id="upload-paper">
-              <form onSubmit={handleUpload}>
-                <Button
-                  className="btn"
-                  type="button"
-                  variant="contained"
-                  color="primary"
-                  component="label"
-                >
-                  Select Picture
-                  <input
-                    type="file"
-                    id="file-upload"
-                    ref={fileInput}
-                    style={{ display: "none" }}
-                  />
-                </Button>
-                <Button
-                  className="btn"
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                >
-                  Upload Picture
-                </Button>
-              </form>
-            </Paper> */}
+
             <form onSubmit={submitMsg}>
               <TextField
                 label="What's on your mind?"
@@ -145,6 +132,35 @@ export const ProfileScreen = ({
                 Post Message
               </Button>
             </form>
+            <form className={classes.photoContainer}>
+              {!uploader ? (
+                <Button
+                  className={classes.photoBtn}
+                  type="button"
+                  variant="contained"
+                  onClick={() => setUploader(true)}
+                >
+                  Change Photo
+                </Button>
+              ) : (
+                <Button
+                  className={classes.photoBtn}
+                  variant="contained"
+                  component="label"
+                  startIcon={<CloudUploadIcon />}
+                >
+                  <input
+                    type="file"
+                    id="file-upload"
+                    ref={fileInput}
+                    onChange={uploadPhoto}
+                    style={{ display: "none" }}
+                  />
+                  Upload Photo
+                </Button>
+              )}
+            </form>
+            <br />
             <Divider />
             <Typography variant="h3" id="friends">
               What you've talked about...
@@ -153,12 +169,15 @@ export const ProfileScreen = ({
             {users.messages &&
               users.messages.map((x) => {
                 return (
-                  <CardContainer
-                    del={() => handleDelete(x.id)}
-                    id={x.id}
-                    key={nanoid()}
-                    message={x.text}
-                  />
+                  <>
+                    <CardContainer
+                      del={() => handleDelete(x.id)}
+                      id={x.id}
+                      key={nanoid()}
+                      message={x.text}
+                    />
+                    <Divider className={classes.divider} />
+                  </>
                 );
               })}
           </div>
