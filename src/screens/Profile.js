@@ -64,7 +64,6 @@ export const ProfileScreen = ({
     addMessage(msg);
     setCnt((c) => c + 1);
   };
-
   const classes = profileStyles();
 
   const handleDelete = (id) => {
@@ -76,6 +75,30 @@ export const ProfileScreen = ({
       console.log("The message was not deleted, nothing happened.");
     }
   };
+
+  const handleLike = (id) => {
+    api.likeMessage(id);
+    setCnt((c) => c + 1);
+  }
+
+  const handleUnlike = (id) => {
+    for (let i = 0; i < id.length; i++) {
+      if (id[i].username === username) {
+        api.unlikeMessage(id[i].id)
+      }
+    }
+    setCnt((c) => c + 1);
+  }
+
+  const isLiked = (likes) => {
+    let nerdy = false;
+    for (let i = 0; i < likes.length; i++) {
+      if (likes[i].username === username) {
+        nerdy = true;
+      }
+    }
+    return nerdy;
+  }
 
   const handleSettings = (ev) => {
     alert("This feature is not yet implemented!");
@@ -90,6 +113,7 @@ export const ProfileScreen = ({
       ev.target.blur();
     }
   };
+
   return (
     <>
       <MenuContainer />
@@ -168,13 +192,18 @@ export const ProfileScreen = ({
 
             {users.messages &&
               users.messages.map((x) => {
+                const truthy = isLiked(x.likes)
                 return (
                   <>
                     <CardContainer
                       del={() => handleDelete(x.id)}
+                      like={() => handleLike(x.id)}
+                      unlike={() => handleUnlike(x.likes)}
                       id={x.id}
                       key={nanoid()}
                       message={x.text}
+                      likesCount={x.likes.length}
+                      liked={truthy}
                     />
                     <Divider className={classes.divider} />
                   </>

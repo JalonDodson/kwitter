@@ -17,10 +17,14 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
     },
   },
+  loginFail: {
+    color: "red",
+  }
 }));
 
-export const LoginForm = ({ login, loading, error, register, user, users }) => {
+export const LoginForm = ({ login, loading, error, register, user }) => {
   // material-ui stuff
+  const [failure, setFailure] = useState(false);
   const classes = useStyles();
   // end of material-ui stuff
   // Not to be confused with "this.setState" in classes
@@ -37,6 +41,7 @@ export const LoginForm = ({ login, loading, error, register, user, users }) => {
 
   const [isRegister, setRegister] = useState(false);
   const [userRegistered, setUserRegistered] = useState(false);
+  const [called, setCalled] = useState(false);
 
   const handleSetRegister = (ev) => {
     ev.preventDefault();
@@ -46,8 +51,14 @@ export const LoginForm = ({ login, loading, error, register, user, users }) => {
   const handleLogin = (event) => {
     event.preventDefault();
     user(state.username);
-    // users()
-    login(state);
+
+    if (called === false) {
+      login(state);
+      setCalled(true);
+      setFailure(true);
+    } else {
+      login(state)
+    }
   };
 
   const handleRegister = (event) => {
@@ -91,9 +102,18 @@ export const LoginForm = ({ login, loading, error, register, user, users }) => {
               You have successfully registered. Please sign in!
             </Typography>
           ) : null}
+          {failure && 
+          <Typography
+          variant="overline"
+          id="login-fail"
+          className={classes.loginFail}
+        >
+          You have entered the incorrect username or password, please try again!
+        </Typography>}
           <FormControl variant="outlined">
             <InputLabel htmlFor="component-outlined">Username</InputLabel>
             <OutlinedInput
+              error={failure}
               type="text"
               name="username"
               autoFocus
@@ -106,6 +126,7 @@ export const LoginForm = ({ login, loading, error, register, user, users }) => {
           <FormControl variant="outlined">
             <InputLabel htmlFor="component-outlined">Password</InputLabel>
             <OutlinedInput
+              error={failure}
               type="password"
               name="password"
               required

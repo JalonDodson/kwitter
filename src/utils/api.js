@@ -172,6 +172,29 @@ class API {
       return err;
     }
   }
+
+  async likeMessage(messageId) {
+    try {
+      await this.axiosInstance.post(
+        `/likes`, {
+          messageId: messageId,
+        });
+    } catch (err) {
+      helpMeInstructor(err);
+      console.log("bruh, pls work");
+      return err;
+    }
+  }
+
+  async unlikeMessage(likeId) {
+    try {
+      await this.axiosInstance.delete(`/likes/${likeId}`)
+    } catch (err) {
+      helpMeInstructor(err)
+      console.log("yo you really buggin bruh");
+      return err;
+    }
+  }
 }
 
 // WARNING.. do not touch below this line if you want to have a good day =]

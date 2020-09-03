@@ -11,11 +11,20 @@ import Typography from "@material-ui/core/Typography";
 import { userCardStyles } from "../../hooks/userCardStyles";
 
 import Image from "../../utils/like-icon.png";
+import Unlike from "../../utils/unlike-icon.png";
 
-export const UserCard = ({ user, username, message, del, id }) => {
+export const UserCard = ({
+  user,
+  username,
+  message,
+  del,
+  liked,
+  like,
+  unlike,
+  likesCount,
+}) => {
   const getPhoto = (username) =>
     `https://kwitter-api.herokuapp.com/users/${username}/picture`;
-
   const classes = userCardStyles();
 
   return (
@@ -38,9 +47,17 @@ export const UserCard = ({ user, username, message, del, id }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <IconButton size="small" color="primary">
-          <img src={Image} className={classes.like} alt="like icon" />
-        </IconButton>
+        {liked ? (
+          <IconButton size="small" color="primary" onClick={unlike}>
+            <img src={Image} className={classes.like} alt="unlike icon" />
+          </IconButton>
+        ) : (
+          <IconButton size="small" color="primary" onClick={like}>
+            <img src={Unlike} className={classes.like} alt="like icon" />
+          </IconButton>
+        )}
+
+        <p>{likesCount}</p>
         <IconButton size="small" color="primary" onClick={del}>
           <ClearIcon className={classes.delete} />
         </IconButton>
