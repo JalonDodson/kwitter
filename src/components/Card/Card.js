@@ -28,7 +28,7 @@ export const UserCard = ({
   const classes = userCardStyles();
 
   return (
-    <Card className={classes.cards}>
+    <Card className={classes.cards}> 
       <CardActionArea>
         <CardMedia
           component="img"

@@ -24,6 +24,18 @@ export const Navigation = () => (
         path="/thecurrent"
         component={Current}
       />
+      {/* <ConnectedRoute
+        exact
+        isProtected
+        path="/some-other-thing"
+        component={Stupid}
+      />
+      <ConnectedRoute
+        exact
+        isProtected
+        path="/we-may-decide"
+        component={Things}
+      /> */}
       <ConnectedRoute path="*" component={NotFoundScreen} />
     </Switch>
   </BrowserRouter>

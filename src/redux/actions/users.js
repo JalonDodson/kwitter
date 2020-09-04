@@ -41,15 +41,15 @@ export const user = (username) => async (dispatch, getState) => {
 //   }
 // };
 
-// export const addPhoto = (username, photo) => async (dispatch) => {
-//   try {
-//     const payload = await api.addPhoto(username, photo);
+export const addPhoto = (username, photo) => async (dispatch) => {
+  try {
+    const payload = await api.addPhoto(username, photo);
 
-//     console.log({ payload });
-//   } catch (err) {
-//     console.log(err, "yes, it's an error");
-//   }
-// };
+    console.log({ payload });
+  } catch (err) {
+    console.log(err, "yes, it's an error");
+  }
+};
 
 export const addMessage = (message) => async (dispatch, getState) => {
   try {

@@ -1,12 +1,12 @@
 import React from 'react';
 
 import './NewsFeed.css'
-import { CardContainer } from "../components/Card";
+import { CardContainer } from "../Card";
 
-export const NewsFeed = () => ({
+export const NewsFeed = () => {
     return (
         <>
-        // return messages mapped to CardContainer
+        <CardContainer />
         </>
     )
-});
+};
