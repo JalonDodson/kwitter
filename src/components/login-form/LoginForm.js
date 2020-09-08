@@ -54,9 +54,13 @@ export const LoginForm = ({ login, loading, error, register, user }) => {
     if (called === false) {
       user(state.username);
       login(state);
-      setCalled(true);
-      setFailure(true);
+      setTimeout(() => {
+        setCalled(true);
+        setFailure(true);
+      },
+      1000)
     } else {
+      
       user(state.username);
       login(state);
       setCalled(false);
