@@ -1,14 +1,13 @@
 import React from 'react';
 
 import './Stream.css';
-import { MusicPlayer } from '../Player';
 import { NewsBoard } from '../NewsFeed';
 
 
 const Stream = (props) => {
     return (
         <>
-        <MusicPlayer />
+        {/* <MusicPlayer /> */}
         <br />
         mutha 
         <br />

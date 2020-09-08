@@ -147,10 +147,10 @@ class API {
     }
   }
 
-  async getMessages() {
+  async allMessages(limit) {
     try {
       const result = await this.axiosInstance.get(
-        `/messages?limit=100&offset=0`
+        `/messages?limit=${limit}&offset=0`
       );
       return result;
     } catch (err) {

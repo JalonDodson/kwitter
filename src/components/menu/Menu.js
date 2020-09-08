@@ -101,7 +101,7 @@ export const MenuBar = ({ isAuthenticated, logout, user }) => {
         <MenuItem>
           <Link to="/">Profile</Link>
         </MenuItem>
-        {/* <MenuItem onClick={deleteConfirm}>Delete Profile</MenuItem> */}
+        {/* no, just refresh the page and then seelect the current from the account icon thing. wait*/}
         <MenuItem>
         <Link to='/thecurrent'>The Current</Link>
         </MenuItem>

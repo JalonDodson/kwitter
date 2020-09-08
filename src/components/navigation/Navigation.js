@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch } from "react-router-dom";
-import { HomeScreen, Profile, NotFoundScreen, Current } from "../../screens";
+import { HomeScreen, Profile, NotFoundScreen, TheCurrent } from "../../screens";
 import { ConnectedRoute } from "../connected-route/ConnectedRoute";
 
 export const Navigation = () => (
@@ -22,7 +22,7 @@ export const Navigation = () => (
         exact
         isProtected
         path="/thecurrent"
-        component={Current}
+        component={TheCurrent}
       />
       {/* <ConnectedRoute
         exact

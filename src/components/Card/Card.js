@@ -10,6 +10,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { userCardStyles } from "../../hooks/userCardStyles";
 
+import DefaultImg from "../../utils/defaultprofile.jpg";
 import Image from "../../utils/like-icon.png";
 import Unlike from "../../utils/unlike-icon.png";
 
@@ -22,24 +23,26 @@ export const UserCard = ({
   like,
   unlike,
   likesCount,
+  photo,
+  displayName
 }) => {
-  const getPhoto = (username) =>
-    `https://kwitter-api.herokuapp.com/users/${username}/picture`;
+
+  const getPhoto = (username) => `https://kwitter-api.herokuap.com/users/${username}/picture`;
   const classes = userCardStyles();
 
   return (
-    <Card className={classes.cards}> 
+    <Card className={classes.cards}>
       <CardActionArea>
         <CardMedia
           component="img"
-          alt={`${user.displayName}'s profile picture`}
+          alt={`${displayName}'s profile picture`}
           height="120"
-          image={getPhoto(username)}
-          title={`${user.displayName}'s profile picture`}
+          image={getPhoto(displayName)}
+          title={`${displayName}'s profile picture`}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {user.displayName} says..
+            {displayName} says..
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             {message}
@@ -52,10 +55,10 @@ export const UserCard = ({
             <img src={Image} className={classes.like} alt="unlike icon" />
           </IconButton>
         ) : (
-          <IconButton size="small" color="primary" onClick={like}>
-            <img src={Unlike} className={classes.like} alt="like icon" />
-          </IconButton>
-        )}
+            <IconButton size="small" color="primary" onClick={like}>
+              <img src={Unlike} className={classes.like} alt="like icon" />
+            </IconButton>
+          )}
 
         <p>{likesCount}</p>
         <IconButton size="small" color="primary" onClick={del}>

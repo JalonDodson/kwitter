@@ -28,6 +28,7 @@ export const ProfileScreen = ({
   users,
   username,
   user,
+  getMessages,
 }) => {
   const [cnt, setCnt] = useState(0);
   const [msg, setMsg] = useState("");
@@ -54,6 +55,7 @@ export const ProfileScreen = ({
   };
 
   useEffect(() => {
+    getMessages();
     userMessages(username);
     // eslint-disable-next-line
   }, [cnt]);
@@ -189,7 +191,6 @@ export const ProfileScreen = ({
             <Typography variant="h3" id="friends">
               What you've talked about...
             </Typography>
-
             {users.messages &&
               users.messages.map((x) => {
                 const truthy = isLiked(x.likes)
@@ -204,7 +205,7 @@ export const ProfileScreen = ({
                       message={x.text}
                       likesCount={x.likes.length}
                       liked={truthy}
-                    />
+                      />
                     <Divider className={classes.divider} />
                   </>
                 );

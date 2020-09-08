@@ -1,16 +1,5 @@
-// TODO: implement
-// import API return for messages
-
-// const [INITIAL_STATE, setInitState] = useState()
-// setInitState(/*API retrun*/)
-// {
-//   messages: [{}],
-// };
-
-// TODO: implement
 import { ADD_MESSAGE, GET_MESSAGES, USER_MESSAGES, DELETE_MESSAGE } from "../actions";
 
-// INITIAL STATE
 const INITIAL_STATE = {
   user: [],
   all: [],

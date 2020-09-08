@@ -62,17 +62,6 @@ export const addMessage = (message) => async (dispatch, getState) => {
   }
 };
 
-export const getMessages = () => async (dispatch, getState) => {
-  try {
-    const payload = await api.getMessages();
-    dispatch({ type: GET_MESSAGES, payload });
-
-    console.log({ payload });
-  } catch (err) {
-    console.log(err, "sorry, broski you have an error");
-  }
-};
-
 export const deleteMessage = (id) => async (dispatch, getState) => {
   try {
     const payload = await api.deleteMessage(id);
@@ -94,3 +83,13 @@ export const userMessages = (username) => async (dispatch, getState) => {
     console.log(err, "damn, dog. u got an error");
   }
 };
+
+export const getMessages = (limit = 100) => async (dispatch) => {
+  try {
+    const payload = await api.allMessages(limit);
+    dispatch({ type: GET_MESSAGES, payload })
+    console.log({ payload })
+  } catch (err) {
+    console.log(err, "please work please");
+  }
+}
