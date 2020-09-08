@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import "./Menu.css";
 
@@ -18,6 +18,7 @@ import { menuStyles } from "../../hooks/menuStyles";
 
 export const MenuBar = ({ isAuthenticated, logout, user }) => {
   // material-ui stuff
+  const [searchTerm, setSearchState] = useState("");
   const classes = menuStyles();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -32,7 +33,21 @@ export const MenuBar = ({ isAuthenticated, logout, user }) => {
     setAnchorEl(null);
   };
   // api stuff
+  const handleChange = (ev) => {
+    setSearchState(ev.target.value);
+  }
 
+  const logMeOut = () => {
+    logout();
+  }
+
+  const handleSearch = (ev) => {
+    if (ev.key === "Enter") {
+      console.log(searchTerm);
+      console.log(true);
+      ev.target.value = "";
+    }
+  }
   const pictureURL = (username) =>
     `https://kwitter-api.herokuapp.com/users/${username}/picture`;
 
@@ -59,11 +74,13 @@ export const MenuBar = ({ isAuthenticated, logout, user }) => {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search Kwitter…"
+              placeholder="Search Kwitter Users..."
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
+              onChange={handleChange}
+              onKeyDown={handleSearch}
               inputProps={{ "aria-label": "search" }}
             />
           </div>
@@ -105,7 +122,7 @@ export const MenuBar = ({ isAuthenticated, logout, user }) => {
         <MenuItem>
         <Link to='/thecurrent'>The Current</Link>
         </MenuItem>
-        <MenuItem onClick={logout}>Log Out</MenuItem>
+        <MenuItem onClick={logMeOut}>Log Out</MenuItem>
       </Menu>
     </>
   );

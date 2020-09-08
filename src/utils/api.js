@@ -66,6 +66,41 @@ class API {
     }
   }
 
+  async deleteUser(username) {
+    try {
+      const res = await this.axiosInstance.delete(`/users/${username}`);
+      return res;
+    } catch (err) {
+      helpMeInstructor(err);
+      return err;
+    }
+  }
+
+  async changeUserInfo(display, about, username) {
+    try {
+      const res = await this.axiosInstance.patch(`/users/${username}`, {
+        about: about,
+        displayName: display,
+      });
+      return res;
+    } catch (err) {
+      helpMeInstructor(err);
+      return err;
+    }
+  }
+
+  async changePassword(username, password) {
+    try {
+      const res = await this.axiosInstance.patch(`/users/${username}`, {
+        password: password,
+      });
+      return res;
+    } catch (err) {
+      helpMeInstructor(err);
+      return err;
+    }
+  }
+
   async logout() {
     try {
       await this.axiosInstance.get("/auth/logout");
@@ -99,14 +134,14 @@ class API {
   }
 
   async getPhoto(username) {
-      await this.axiosInstance
-        .get(`/users/${username}/picture`)
-        .then(res => res)
-        .catch(function (err) {
-          helpMeInstructor(err);
-          console.log(err);
-        });
-      }
+    await this.axiosInstance
+      .get(`/users/${username}/picture`)
+      .then((res) => res)
+      .catch(function (err) {
+        helpMeInstructor(err);
+        console.log(err);
+      });
+  }
 
   async addPhoto(username, photo) {
     try {
@@ -175,10 +210,9 @@ class API {
 
   async likeMessage(messageId) {
     try {
-      await this.axiosInstance.post(
-        `/likes`, {
-          messageId: messageId,
-        });
+      await this.axiosInstance.post(`/likes`, {
+        messageId: messageId,
+      });
     } catch (err) {
       helpMeInstructor(err);
       console.log("bruh, pls work");
@@ -188,9 +222,9 @@ class API {
 
   async unlikeMessage(likeId) {
     try {
-      await this.axiosInstance.delete(`/likes/${likeId}`)
+      await this.axiosInstance.delete(`/likes/${likeId}`);
     } catch (err) {
-      helpMeInstructor(err)
+      helpMeInstructor(err);
       console.log("yo you really buggin bruh");
       return err;
     }

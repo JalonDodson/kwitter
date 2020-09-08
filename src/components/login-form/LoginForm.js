@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+                  import React, { useState } from "react";
 import ProptTypes from "prop-types";
 import "./LoginForm.css";
 
@@ -57,10 +57,8 @@ export const LoginForm = ({ login, loading, error, register, user }) => {
       setTimeout(() => {
         setCalled(true);
         setFailure(true);
-      },
-      1000)
+      }, 1000);
     } else {
-      
       user(state.username);
       login(state);
       setCalled(false);
@@ -71,18 +69,22 @@ export const LoginForm = ({ login, loading, error, register, user }) => {
   const handleRegister = (event) => {
     event.preventDefault();
 
-    console.log("working");
-
     register(newUser);
     setUserRegistered(true);
     setRegister(false);
+    setCalled(false);
+    setFailure(false);
+
+    setState({
+      username: "",
+      password: "",
+    });
   };
 
   const handleRegistration = (event) => {
     const inputName = event.target.name;
     const inputValue = event.target.value;
     setNewUser((prevState) => ({ ...prevState, [inputName]: inputValue }));
-    console.log("plz work", newUser);
   };
 
   const handleChange = (event) => {

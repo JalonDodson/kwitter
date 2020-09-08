@@ -10,26 +10,23 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { userCardStyles } from "../../hooks/userCardStyles";
 
-import DefaultImg from "../../utils/defaultprofile.jpg";
 import Image from "../../utils/like-icon.png";
 import Unlike from "../../utils/unlike-icon.png";
 
 export const UserCard = ({
-  user,
-  username,
   message,
   del,
   liked,
   like,
   unlike,
   likesCount,
-  photo,
-  displayName
+  photoLoc,
+  displayName,
 }) => {
 
-  const getPhoto = (username) => `https://kwitter-api.herokuap.com/users/${username}/picture`;
   const classes = userCardStyles();
-
+// i just dont understand
+// makes me want to choke air
   return (
     <Card className={classes.cards}>
       <CardActionArea>
@@ -37,7 +34,7 @@ export const UserCard = ({
           component="img"
           alt={`${displayName}'s profile picture`}
           height="120"
-          image={getPhoto(displayName)}
+          image={photoLoc}
           title={`${displayName}'s profile picture`}
         />
         <CardContent>

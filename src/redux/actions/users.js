@@ -65,13 +65,13 @@ export const addMessage = (message) => async (dispatch, getState) => {
 export const deleteMessage = (id) => async (dispatch, getState) => {
   try {
     const payload = await api.deleteMessage(id);
-    dispatch ({ type: DELETE_MESSAGE, payload });
+    dispatch({ type: DELETE_MESSAGE, payload });
 
     console.log("Message successfully deleted.");
   } catch (err) {
     console.log("Do you have authorization to delete this message, fam?");
   }
-}
+};
 
 export const userMessages = (username) => async (dispatch, getState) => {
   try {
@@ -87,9 +87,9 @@ export const userMessages = (username) => async (dispatch, getState) => {
 export const getMessages = (limit = 100) => async (dispatch) => {
   try {
     const payload = await api.allMessages(limit);
-    dispatch({ type: GET_MESSAGES, payload })
-    console.log({ payload })
+    dispatch({ type: GET_MESSAGES, payload });
+    console.log({ payload });
   } catch (err) {
     console.log(err, "please work please");
   }
-}
+};
