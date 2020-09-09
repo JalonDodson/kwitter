@@ -201,6 +201,7 @@ export const ProfileScreen = ({
 
   const closeConf = () => {
     setConfOpener(false);
+    console.log(confOpener)
   };
 
   const handleConfirm = () => {
@@ -208,6 +209,7 @@ export const ProfileScreen = ({
     setConfOpener(false);
     setPwOpener(true);
     setPw("");
+    console.log(confOpener, pwOpener);
   };
 
   const closePw = () => setPwOpener(false);
@@ -220,12 +222,14 @@ export const ProfileScreen = ({
   const changePassword = () => {
     setConfOpener(true);
     handleMenuClose();
+    console.log(confOpener)
   };
 
   const confirmPw = () => {
     api.changePassword(username, pw);
     setChanged(true);
     setPwOpener(false);
+    console.log(confOpener, pwOpener);
   };
 
   const closeChange = () => {
