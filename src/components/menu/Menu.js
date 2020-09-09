@@ -16,13 +16,7 @@ import SearchIcon from "@material-ui/icons/Search";
 
 import { menuStyles } from "../../hooks/menuStyles";
 
-export const MenuBar = ({
-  isAuthenticated,
-  logout,
-  user,
-  username,
-}) => {
-
+export const MenuBar = ({ isAuthenticated, logout, user, username }) => {
   // material-ui stuff
   const [searchTerm, setSearchState] = useState("");
   const classes = menuStyles();
@@ -64,17 +58,18 @@ export const MenuBar = ({
   }, [user]);
 
   const getPhoto = (username) => {
-    console.log(user.pictureLocation.slice(27, user.pictureLocation.length));
-    return `https://kwitter-api.herokuapp.com/users/${username}/picture?t${user.pictureLocation.slice(
-      27,
-      user.pictureLocation.length
-    )}`;
+    const photo = user
+      ? `https://kwitter-api.herokuapp.com/users/${username}/picture?t${user.pictureLocation.slice(
+          27,
+          user.pictureLocation.length
+        )}`
+      : null;
+    return photo;
   };
 
   const updatePhoto = () => {
     return getPhoto(username);
   };
-
 
   return !isAuthenticated ? (
     <>
