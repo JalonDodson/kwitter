@@ -110,7 +110,7 @@ class API {
     }
   }
 
-  async users() {
+  async getUsers() {
     try {
       const result = await this.axiosInstance.get("/users?limit=9999");
       console.log("Where am I coming from?", result);
@@ -121,7 +121,7 @@ class API {
     }
   }
 
-  async user(username) {
+  async getUser(username) {
     try {
       const result = await this.axiosInstance.get(`/users/${username}`);
       // const result = await this.axiosInstance.get(`/users/${username}`);

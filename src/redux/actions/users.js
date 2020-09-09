@@ -7,9 +7,9 @@ export const GET_MESSAGES = "GET_MESSAGES";
 export const USER_MESSAGES = "USER_MESSAGES";
 export const DELETE_MESSAGE = "DELETE_MESSAGE";
 
-export const users = () => async (dispatch, getState) => {
+export const getUsers = () => async (dispatch, getState) => {
   try {
-    const payload = await api.users();
+    const payload = await api.getUsers();
 
     dispatch({ type: USERS, payload });
     console.log({ payload });
@@ -19,9 +19,9 @@ export const users = () => async (dispatch, getState) => {
   }
 };
 
-export const user = (username) => async (dispatch, getState) => {
+export const getUser = (username) => async (dispatch, getState) => {
   try {
-    const payload = await api.user(username);
+    const payload = await api.getUser(username);
 
     dispatch({ type: USER, payload });
   } catch (err) {
