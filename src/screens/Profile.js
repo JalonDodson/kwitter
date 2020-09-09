@@ -187,7 +187,7 @@ export const ProfileScreen = ({
     const about = abt === "" ? user.about : abt;
     const dName = name === "" ? user.displayName : name;
     api.changeUserInfo(dName, about, username);
-    user(username);
+    getUser(username);
     setAccOpener(false);
     setName("");
     setAbt("");
@@ -205,7 +205,7 @@ export const ProfileScreen = ({
   };
 
   const handleConfirm = () => {
-    user(username);
+    getUser(username);
     setConfOpener(false);
     setPwOpener(true);
     setPw("");
