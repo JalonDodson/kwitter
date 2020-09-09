@@ -54,29 +54,39 @@ export const ProfileScreen = ({
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
   const [cnt, setCnt] = useState(0);
   const [msg, setMsg] = useState("");
-  // const [uploader, setUploader] = useState(false);
 
-  const getPhoto = (username) =>
-    `https://kwitter-api.herokuapp.com/users/${username}/picture`;
+  // photos
+  useEffect(() => {
+    updatePhoto();
+    // eslint-disable-next-line
+  }, [user]);
 
-  const updatePhoto = (username) => {
+  const getPhoto = (username) => {
+    console.log(user.pictureLocation.slice(27, user.pictureLocation.length));
+    return `https://kwitter-api.herokuapp.com/users/${username}/picture?t${user.pictureLocation.slice(
+      27,
+      user.pictureLocation.length
+    )}`;
+  };
+
+  const updatePhoto = () => {
     return getPhoto(username);
   };
 
-  const uploadPhoto = () => {
+  const uploadPhoto = async (ev) => {
     const formData = new FormData();
 
     const data = fileInput.current.files[0];
 
     formData.append("picture", data);
 
-    api.addPhoto(username, formData);
-
-    // after api request finishes
-    getUser(username);
-    updatePhoto(username);
+    const payload = await api.addPhoto(username, formData);
+    if (payload) {
+      getUser(username);
+    }
     // setUploader(false);
   };
 
@@ -85,7 +95,7 @@ export const ProfileScreen = ({
       <Avatar
         className={classes.largeAvi}
         alt={user.displayName}
-        src={updatePhoto(username)}
+        src={updatePhoto()}
       ></Avatar>
     );
   };
@@ -166,6 +176,14 @@ export const ProfileScreen = ({
   const [abt, setAbt] = useState("");
   const [name, setName] = useState("");
 
+  const greeting = () => {
+    return (
+      <Typography variant="h1" id="welcome">
+        Welcome to Kwitter, {user.displayName}!
+      </Typography>
+    );
+  };
+
   const handleAccChange = () => {
     setAccOpener(true);
     handleMenuClose();
@@ -183,14 +201,17 @@ export const ProfileScreen = ({
     setAbt(ev.target.value);
   };
 
-  const submitChanges = () => {
+  const submitChanges = async () => {
+    console.log(name, user.displayName);
     const about = abt === "" ? user.about : abt;
     const dName = name === "" ? user.displayName : name;
-    api.changeUserInfo(dName, about, username);
-    getUser(username);
-    setAccOpener(false);
-    setName("");
-    setAbt("");
+    const payload = await api.changeUserInfo(dName, about, username);
+    if (payload) {
+      getUser(username);
+      setAccOpener(false);
+      setName("");
+      setAbt("");
+    }
   };
 
   // password handlers
@@ -201,7 +222,7 @@ export const ProfileScreen = ({
 
   const closeConf = () => {
     setConfOpener(false);
-    console.log(confOpener)
+    console.log(confOpener);
   };
 
   const handleConfirm = () => {
@@ -222,7 +243,7 @@ export const ProfileScreen = ({
   const changePassword = () => {
     setConfOpener(true);
     handleMenuClose();
-    console.log(confOpener)
+    console.log(confOpener);
   };
 
   const confirmPw = () => {
@@ -430,9 +451,7 @@ export const ProfileScreen = ({
             </Dialog>
           )}
           <div>
-            <Typography variant="h1" id="welcome">
-              Welcome to Kwitter, {user.displayName}!
-            </Typography>
+            {greeting()}
             {user.pictureLocation !== null ? userPic() : defaultPic()}
 
             <form onSubmit={submitMsg}>

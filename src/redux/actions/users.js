@@ -2,6 +2,7 @@ import api from "../../utils/api";
 
 export const USERS = "USERS";
 export const USER = "USER";
+// export const USER_PHOTO = "USER_PHOTO";
 export const ADD_MESSAGE = "ADD_MESSAGE";
 export const GET_MESSAGES = "GET_MESSAGES";
 export const USER_MESSAGES = "USER_MESSAGES";

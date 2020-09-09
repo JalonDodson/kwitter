@@ -6,6 +6,7 @@ const mapStateToProps = (state) => ({
   username: state.auth.username,
   user: state.users.user.user,
   users: state.messages.user,
+  // userPhoto: state.users.userPhoto,
 });
 
 const mapDispatchToProps = {

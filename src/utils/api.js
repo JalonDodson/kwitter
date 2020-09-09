@@ -133,15 +133,15 @@ class API {
     }
   }
 
-  async getPhoto(username) {
-    await this.axiosInstance
-      .get(`/users/${username}/picture`)
-      .then((res) => res)
-      .catch(function (err) {
-        helpMeInstructor(err);
-        console.log(err);
-      });
-  }
+  // async getPhoto(username) {
+  //   try {
+  //     const result = await this.axiosInstance.get(`/users/${username}/picture`);
+  //     return result;
+  //   } catch (err) {
+  //     helpMeInstructor(err);
+  //     console.log("Bruh we really got another error");
+  //   }
+  // }
 
   async addPhoto(username, photo) {
     try {

@@ -10,7 +10,7 @@ You will also be following the Scrum process and, although everyone will be a de
 Scrum Master, and QA Tester. Please see [this document](https://gitlab.com/kenzie-academy/se_public_files/scrum-guidelines/-/blob/master/README.md) for more details.
 
 Client memo:
-
+ sneaky snake AIzaSyCSApNtM6Y_wB_Lzw8K07CMaFkelpWEr-I
 _The logged in user's experience is the core of this application. So we want to establish this core experience first._
 _Since this is a social application, we would like the application to emphasize engagement and engaging with other users as much as possible._
 _We are also interested in establishing the look and feel of our visual brand early so that it can be reused throughout the rest of the application._

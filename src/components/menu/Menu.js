@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Menu.css";
 
@@ -21,7 +21,6 @@ export const MenuBar = ({
   logout,
   user,
   username,
-  photoUpdated,
 }) => {
 
   // material-ui stuff
@@ -55,14 +54,27 @@ export const MenuBar = ({
       ev.target.value = "";
     }
   };
-  const getPhoto = (username) =>
-    `https://kwitter-api.herokuapp.com/users/${username}/picture`;
 
-  const updatePhoto = (username) => {
+  const menuId = "primary-search-account-menu";
+
+  // photo stuff
+  useEffect(() => {
+    updatePhoto();
+    // eslint-disable-next-line
+  }, [user]);
+
+  const getPhoto = (username) => {
+    console.log(user.pictureLocation.slice(27, user.pictureLocation.length));
+    return `https://kwitter-api.herokuapp.com/users/${username}/picture?t${user.pictureLocation.slice(
+      27,
+      user.pictureLocation.length
+    )}`;
+  };
+
+  const updatePhoto = () => {
     return getPhoto(username);
   };
 
-  const menuId = "primary-search-account-menu";
 
   return !isAuthenticated ? (
     <>
