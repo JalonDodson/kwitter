@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { addMessage, deleteMessage, getMessages, user } from "../redux/actions/users";
+import { addMessage, deleteMessage, getMessages, getUser } from "../redux/actions/users";
 
 const mapStateToProps = (state) => ({
   username: state.auth.username,
@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   addMessage,
-  user,
+  getUser,
   deleteMessage,
   getMessages,
 };
