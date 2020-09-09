@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Menu.css";
 
@@ -16,7 +16,14 @@ import SearchIcon from "@material-ui/icons/Search";
 
 import { menuStyles } from "../../hooks/menuStyles";
 
-export const MenuBar = ({ isAuthenticated, logout, user }) => {
+export const MenuBar = ({
+  isAuthenticated,
+  logout,
+  user,
+  username,
+  photoUpdated,
+}) => {
+
   // material-ui stuff
   const [searchTerm, setSearchState] = useState("");
   const classes = menuStyles();
@@ -35,11 +42,11 @@ export const MenuBar = ({ isAuthenticated, logout, user }) => {
   // api stuff
   const handleChange = (ev) => {
     setSearchState(ev.target.value);
-  }
+  };
 
   const logMeOut = () => {
     logout();
-  }
+  };
 
   const handleSearch = (ev) => {
     if (ev.key === "Enter") {
@@ -47,9 +54,13 @@ export const MenuBar = ({ isAuthenticated, logout, user }) => {
       console.log(true);
       ev.target.value = "";
     }
-  }
-  const pictureURL = (username) =>
+  };
+  const getPhoto = (username) =>
     `https://kwitter-api.herokuapp.com/users/${username}/picture`;
+
+  const updatePhoto = (username) => {
+    return getPhoto(username);
+  };
 
   const menuId = "primary-search-account-menu";
 
@@ -97,7 +108,7 @@ export const MenuBar = ({ isAuthenticated, logout, user }) => {
               {user.pictureLocation !== null ? (
                 <Avatar
                   alt={user.displayName}
-                  src={pictureURL(user.username)}
+                  src={updatePhoto(username)}
                 ></Avatar>
               ) : (
                 <Avatar>{user.displayName[0].toUpperCase()}</Avatar>
@@ -120,7 +131,7 @@ export const MenuBar = ({ isAuthenticated, logout, user }) => {
         </MenuItem>
         {/* no, just refresh the page and then seelect the current from the account icon thing. wait*/}
         <MenuItem>
-        <Link to='/thecurrent'>The Current</Link>
+          <Link to="/thecurrent">The Current</Link>
         </MenuItem>
         <MenuItem onClick={logMeOut}>Log Out</MenuItem>
       </Menu>

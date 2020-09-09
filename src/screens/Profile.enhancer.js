@@ -14,7 +14,7 @@ const mapDispatchToProps = {
   deleteMessage,
   getMessages,
   logout,
-  getUser
+  getUser,
 };
 
 export const enhancer = connect(mapStateToProps, mapDispatchToProps);

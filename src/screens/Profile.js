@@ -37,6 +37,7 @@ export const ProfileScreen = ({
   username,
   user,
   logout,
+  getUser,
 }) => {
   // material-ui handlers
   const Transition = React.forwardRef(function Transition(props, ref) {
@@ -55,9 +56,14 @@ export const ProfileScreen = ({
   };
   const [cnt, setCnt] = useState(0);
   const [msg, setMsg] = useState("");
-  const [uploader, setUploader] = useState(false);
+  // const [uploader, setUploader] = useState(false);
+
   const getPhoto = (username) =>
     `https://kwitter-api.herokuapp.com/users/${username}/picture`;
+
+  const updatePhoto = (username) => {
+    return getPhoto(username);
+  };
 
   const uploadPhoto = () => {
     const formData = new FormData();
@@ -68,7 +74,28 @@ export const ProfileScreen = ({
 
     api.addPhoto(username, formData);
 
-    setUploader(false);
+    // after api request finishes
+    getUser(username);
+    updatePhoto(username);
+    // setUploader(false);
+  };
+
+  const userPic = () => {
+    return (
+      <Avatar
+        className={classes.largeAvi}
+        alt={user.displayName}
+        src={updatePhoto(username)}
+      ></Avatar>
+    );
+  };
+
+  const defaultPic = () => {
+    return (
+      <Avatar className={classes.large}>
+        {user.displayName[0].toUpperCase()}
+      </Avatar>
+    );
   };
 
   const handleMsg = (ev) => {
@@ -402,17 +429,7 @@ export const ProfileScreen = ({
             <Typography variant="h1" id="welcome">
               Welcome to Kwitter, {user.displayName}!
             </Typography>
-            {user.pictureLocation !== null ? (
-              <Avatar
-                className={classes.largeAvi}
-                alt={user.displayName}
-                src={getPhoto(username)}
-              ></Avatar>
-            ) : (
-              <Avatar className={classes.large}>
-                {user.displayName[0].toUpperCase()}
-              </Avatar>
-            )}
+            {user.pictureLocation !== null ? userPic() : defaultPic()}
 
             <form onSubmit={submitMsg}>
               <TextField
@@ -433,32 +450,21 @@ export const ProfileScreen = ({
               </Button>
             </form>
             <form className={classes.photoContainer}>
-              {!uploader ? (
-                <Button
-                  className={classes.photoBtn}
-                  type="button"
-                  variant="contained"
-                  onClick={() => setUploader(true)}
-                >
-                  Change Photo
-                </Button>
-              ) : (
-                <Button
-                  className={classes.photoBtn}
-                  variant="contained"
-                  component="label"
-                  startIcon={<CloudUploadIcon />}
-                >
-                  <input
-                    type="file"
-                    id="file-upload"
-                    ref={fileInput}
-                    onChange={uploadPhoto}
-                    style={{ display: "none" }}
-                  />
-                  Upload Photo
-                </Button>
-              )}
+              <Button
+                className={classes.photoBtn}
+                variant="contained"
+                component="label"
+                startIcon={<CloudUploadIcon />}
+              >
+                <input
+                  type="file"
+                  id="file-upload"
+                  ref={fileInput}
+                  onChange={uploadPhoto}
+                  style={{ display: "none" }}
+                />
+                Upload Photo
+              </Button>
             </form>
             <br />
             <Divider />
