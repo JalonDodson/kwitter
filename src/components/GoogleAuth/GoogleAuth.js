@@ -13,6 +13,7 @@ export const GoogleAuth = () => {
       setLogged(true);
       setToken(res.accessToken);
     }
+    console.log(res)
   };
 
   const logout = () => {
@@ -27,10 +28,6 @@ export const GoogleAuth = () => {
   const handleLoginFail = (res) => {
     console.table("Google Login failed.", res);
   };
-
-  const userInfo = (res) => {
-      console.log(res);
-  }
 
   return (
     <>
@@ -49,7 +46,7 @@ export const GoogleAuth = () => {
           onFailure={handleLoginFail}
           cookiePolicy={"single_host_origin"}
           responseType="code,token"
-          fetchBasicProfile={userInfo}
+          fetchBasicProfile
         />
       )}
       {accessToken ? console.log(`Access Token: ${accessToken}`) : null}
