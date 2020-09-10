@@ -5,15 +5,13 @@ import { nanoid } from "nanoid";
 
 import { MenuContainer } from "../components";
 import { CardContainer } from "../components/Card";
+import { AccountDialog } from "../components/Dialogs/AccountDialog";
+import { UploadDialog } from "../components/Dialogs/UploadDialog";
+import { PasswordDialog } from "../components/Dialogs/PasswordDialog";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
@@ -21,11 +19,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import { profileStyles } from "../hooks/profileStyles";
 import SettingsIcon from "@material-ui/icons/Settings";
-import Slide from "@material-ui/core/Slide";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 
 import "./Profile.css";
+import { ConfirmDialog } from "../components/Dialogs/ConfirmDialog";
+import { ChangedDialog } from "../components/Dialogs/ChangedDialog";
+import { DeleteDialog } from "../components/Dialogs/DeleteDialog";
 
 const fileInput = createRef();
 
@@ -42,9 +42,6 @@ export const ProfileScreen = ({
   unlikeUserMessage,
 }) => {
   // material-ui handlers
-  const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -107,8 +104,6 @@ export const ProfileScreen = ({
     } else {
       setUploadFailed(true);
     }
-
-    // setUploader(false);
   };
 
   const closeUpload = async () => {
@@ -336,182 +331,41 @@ export const ProfileScreen = ({
             <MenuItem onClick={handleAccountDeletion}>Delete Account</MenuItem>
           </Menu>
           {uploadFailed && (
-            <Dialog
-              open={uploadFailed}
-              TransitionComponent={Transition}
-              keepMounted
-              onClose={closeUpload}
-              aria-labelledby="alert-dialog-slide-title"
-              aria-describedby="alert-dialog-slide-description"
-            >
-              <DialogTitle id="alert-dialog-slide-title">
-                {"Upload Failed"}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description">
-                  Oh no! The file you tried to upload appears to be too big—our
-                  tortoises were unable to process it! Please ensure that the
-                  file you uploaded is less than 200 kilobytes (KB) in size and
-                  is one of the supported types: .JPEG, .PNG, or .GIF.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={closeUpload} color="primary">
-                  Acknowledge
-                </Button>
-              </DialogActions>
-            </Dialog>
+            <UploadDialog failed={uploadFailed} close={closeUpload} />
           )}
           {accOpener && (
-            <Dialog
+            <AccountDialog
               open={accOpener}
-              onClose={closeAcc}
-              aria-labelledby="form-dialog-title"
-            >
-              <DialogTitle id="form-dialog-title">
-                Change Account Information
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  You are now able to change your account information. Please
-                  enter your new desired information into the boxes. If you
-                  leave a box empty, the related information will remain
-                  unchanged.
-                </DialogContentText>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  name="name"
-                  label="Change Display Name"
-                  type="text"
-                  onChange={handleNameChange}
-                  value={name}
-                  fullWidth
-                />
-                <TextField
-                  margin="dense"
-                  name="about"
-                  rows={8}
-                  label="Tell us a little about yourself!"
-                  type="text"
-                  onChange={handleAbtChange}
-                  value={abt}
-                  fullWidth
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={closeAcc} color="primary">
-                  Cancel
-                </Button>
-                <Button onClick={submitChanges} color="primary">
-                  Confirm Changes
-                </Button>
-              </DialogActions>
-            </Dialog>
+              close={closeAcc}
+              nameChange={handleNameChange}
+              name={name}
+              aboutChange={handleAbtChange}
+              about={abt}
+              submit={submitChanges}
+            />
           )}
           {confOpener && (
-            <Dialog
+            <ConfirmDialog
               open={confOpener}
-              TransitionComponent={Transition}
-              keepMounted
-              onClose={closeConf}
-              aria-labelledby="alert-dialog-slide-title"
-              aria-describedby="alert-dialog-slide-description"
-            >
-              <DialogTitle id="alert-dialog-slide-title">
-                {"Change Password?"}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description">
-                  Would you like to change your account password? This action is
-                  irreversible and your old password may not be recovered! Press
-                  abort to cancel this action, or continue to move forward.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={closeConf} color="primary">
-                  Abort
-                </Button>
-                <Button onClick={handleConfirm} color="primary">
-                  Continue
-                </Button>
-              </DialogActions>
-            </Dialog>
+              close={closeConf}
+              handle={handleConfirm}
+            />
           )}
           {pwOpener && (
-            <Dialog
+            <PasswordDialog
               open={pwOpener}
-              onClose={closePw}
-              aria-labelledby="form-dialog-title"
-            >
-              <DialogTitle id="form-dialog-title">Change Password</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Enter your new password here, then press "Change Password" to
-                  continue, or "Cancel" to abort.
-                </DialogContentText>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  id="password"
-                  label="New Password"
-                  type="password"
-                  onChange={handlePwChange}
-                  fullWidth
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={closePw} color="primary">
-                  Cancel
-                </Button>
-                <Button onClick={confirmPw} color="primary">
-                  Change Password
-                </Button>
-              </DialogActions>
-            </Dialog>
+              close={closePw}
+              handle={handlePwChange}
+              confirm={confirmPw}
+            />
           )}
-          {changed && (
-            <Dialog
-              open={changed}
-              TransitionComponent={Transition}
-              keepMounted
-              onClose={closeChange}
-              aria-labelledby="alert-dialog-slide-title"
-              aria-describedby="alert-dialog-slide-description"
-            >
-              <DialogTitle id="alert-dialog-slide-title">
-                {"Password successfully changed!"}
-              </DialogTitle>
-              <DialogActions>
-                <Button onClick={closeChange} color="primary">
-                  Confirm
-                </Button>
-              </DialogActions>
-            </Dialog>
-          )}
+          {changed && <ChangedDialog changed={changed} closed={closeChange} />}
           {delOpener && (
-            <Dialog
+            <DeleteDialog
               open={delOpener}
-              onClose={closeDel}
-              aria-labelledby="form-dialog-title"
-            >
-              <DialogTitle id="form-dialog-title">Delete Account</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Are you sure you would like to delete your account? Please
-                  keep in mind that this action is irreversible and all data
-                  associated with your account will be destroyed.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={closeDel} color="primary">
-                  Cancel
-                </Button>
-                <Button onClick={confirmDeletion} color="primary">
-                  Delete Account
-                </Button>
-              </DialogActions>
-            </Dialog>
+              close={closeDel}
+              confirm={confirmDeletion}
+            />
           )}
           <div>
             {greeting()}
