@@ -79,18 +79,24 @@ export const ProfileScreen = ({
     return getPhoto(username);
   };
   const [uploadFailed, setUploadFailed] = useState(false);
+  const isSupported = (file) => {
+    switch (file) {
+      case "image/gif":
+      case "image/jpeg":
+      case "image/jpg":
+      case "image/png":
+        return true;
+      default:
+    }
+    return false;
+  };
+
   const uploadPhoto = async () => {
     const formData = new FormData();
 
     const data = fileInput.current.files[0];
-    const fileTypes = ["image/gif", "image/jpeg", "image/jpg", "image/png"];
 
-    if (
-      (data.size < 200000 && data.type === fileTypes[0]) ||
-      data.type === fileTypes[1] ||
-      data.type === fileTypes[2] ||
-      data.type === fileTypes[3]
-    ) {
+    if (data.size < 200000 && isSupported(data.type)) {
       formData.append("picture", data);
       const payload = await api.addPhoto(username, formData);
       if (payload) {
@@ -343,11 +349,10 @@ export const ProfileScreen = ({
               </DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description">
-                  Oh no! The file you tried to upload is either too big or the
-                  incorrect format—our team of tortoises were unable to process
-                  it! Please ensure that the file you uploaded is less than 200
-                  kilobytes (KB) in size and is one of the supported types:
-                  .JPEG, .PNG, or .GIF.
+                  Oh no! The file you tried to upload appears to be too big—our
+                  tortoises were unable to process it! Please ensure that the
+                  file you uploaded is less than 200 kilobytes (KB) in size and
+                  is one of the supported types: .JPEG, .PNG, or .GIF.
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
