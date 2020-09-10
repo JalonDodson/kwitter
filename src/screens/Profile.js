@@ -83,13 +83,21 @@ export const ProfileScreen = ({
     const formData = new FormData();
 
     const data = fileInput.current.files[0];
-
-    formData.append("picture", data);
-
-    const payload = await api.addPhoto(username, formData);
-    if (payload) {
-      getUser(username);
+    if (
+      data.size > 200000 ||
+      data.name.split(".").pop() !== ("jpg" || "jpeg" || "png" || "gif")
+    ) {
+      alert(
+        "File size too big or unsupported file type. Please upload a file that is less than 200KB."
+      );
+    } else {
+      formData.append("picture", data);
+      const payload = await api.addPhoto(username, formData);
+      if (payload) {
+        getUser(username);
+      }
     }
+
     // setUploader(false);
   };
 
