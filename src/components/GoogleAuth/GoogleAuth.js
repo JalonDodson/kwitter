@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { useGoogleLogin, GoogleLogin, GoogleLogout } from "react-google-login";
 
 const CLIENT_ID =
   "581039245535-affjqmpscsb62d7f6pgkf9ij509bnsu0.apps.googleusercontent.com";
@@ -16,16 +16,20 @@ export const GoogleAuth = () => {
   };
 
   const logout = () => {
-      setLogged(false);
-      setToken("");
-  }
+    setLogged(false);
+    setToken("");
+  };
 
   const handleLogoutFail = (res) => {
-      console.table("Google Logout failed", res);
-  }
+    console.table("Google Logout failed", res);
+  };
 
   const handleLoginFail = (res) => {
-      console.table("Google Login failed.", res)
+    console.table("Google Login failed.", res);
+  };
+
+  const userInfo = (res) => {
+      console.log(res);
   }
 
   return (
@@ -45,6 +49,7 @@ export const GoogleAuth = () => {
           onFailure={handleLoginFail}
           cookiePolicy={"single_host_origin"}
           responseType="code,token"
+          fetchBasicProfile={userInfo}
         />
       )}
       {accessToken ? console.log(`Access Token: ${accessToken}`) : null}
