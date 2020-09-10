@@ -78,27 +78,36 @@ export const ProfileScreen = ({
   const updatePhoto = () => {
     return getPhoto(username);
   };
-
+  const [uploadFailed, setUploadFailed] = useState(false);
   const uploadPhoto = async () => {
     const formData = new FormData();
 
     const data = fileInput.current.files[0];
+    const fileTypes = ["image/gif", "image/jpeg", "image/jpg", "image/png"];
+
     if (
-      data.size > 200000 ||
-      data.name.split(".").pop() !== ("jpg" || "jpeg" || "png" || "gif")
+      (data.size < 200000 && data.type === fileTypes[0]) ||
+      data.type === fileTypes[1] ||
+      data.type === fileTypes[2] ||
+      data.type === fileTypes[3]
     ) {
-      alert(
-        "File size too big or unsupported file type. Please upload a file that is less than 200KB."
-      );
-    } else {
       formData.append("picture", data);
       const payload = await api.addPhoto(username, formData);
       if (payload) {
         getUser(username);
+
+        setUploadFailed(false);
       }
+    } else {
+      setUploadFailed(true);
     }
 
     // setUploader(false);
+  };
+
+  const closeUpload = async () => {
+    setUploadFailed(false);
+    return;
   };
 
   const userPic = () => {
@@ -320,6 +329,34 @@ export const ProfileScreen = ({
             <MenuItem onClick={changePassword}>Change Password</MenuItem>
             <MenuItem onClick={handleAccountDeletion}>Delete Account</MenuItem>
           </Menu>
+          {uploadFailed && (
+            <Dialog
+              open={uploadFailed}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={closeUpload}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogTitle id="alert-dialog-slide-title">
+                {"Upload Failed"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                  Oh no! The file you tried to upload is either too big or the
+                  incorrect format—our team of tortoises were unable to process
+                  it! Please ensure that the file you uploaded is less than 200
+                  kilobytes (KB) in size and is one of the supported types:
+                  .JPEG, .PNG, or .GIF.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={closeUpload} color="primary">
+                  Acknowledge
+                </Button>
+              </DialogActions>
+            </Dialog>
+          )}
           {accOpener && (
             <Dialog
               open={accOpener}
@@ -502,6 +539,7 @@ export const ProfileScreen = ({
               >
                 <input
                   type="file"
+                  accept=".jpeg,.jpg,.gif,.png"
                   id="file-upload"
                   ref={fileInput}
                   onChange={uploadPhoto}
