@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ProptTypes from "prop-types";
 import "./LoginForm.css";
-import { GoogleAuth } from "../GoogleAuth/GoogleAuth";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -20,9 +19,19 @@ const useStyles = makeStyles((theme) => ({
   loginFail: {
     color: "red",
   },
+  google: {
+    display: "inline-block",
+    background: "#3f51b5",
+    color: "white",
+    width: "100%",
+    borderRadius: "5px",
+    border: "thin solid #888",
+    boxShadow: "1px 1px 1px grey",
+    whiteSpace: "nowrap",
+  }
 }));
 
-export const LoginForm = ({ login, loading, error, register, getUser }) => {
+export const LoginForm = ({ login, loading, error, register, getUser, googleLogin }) => {
   // material-ui stuff
   const [failure, setFailure] = useState(false);
   const classes = useStyles();
@@ -65,13 +74,6 @@ export const LoginForm = ({ login, loading, error, register, getUser }) => {
       setFailure(false);
     }
   };
-
-  // function onSignIn(googleUser) {
-  //   let profile = googleUser.getBasicProfile();
-  //   console.log(profile.getId());
-  //   console.log(profile.getImageUrl());
-  //   console.log(profile.getName());
-  // }
 
   const handleRegister = (event) => {
     event.preventDefault();
@@ -174,7 +176,7 @@ export const LoginForm = ({ login, loading, error, register, getUser }) => {
           >
             Register
           </Button>
-          <GoogleAuth />
+          <Button variant="contained" color="primary" className={classes.google} onClick={googleLogin}>Login with Google</Button>
         </div>
         <Typography
           variant="overline"

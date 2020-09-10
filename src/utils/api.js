@@ -43,11 +43,43 @@ class API {
         username,
         password,
       });
+      console.log(result);
       return result;
     } catch (err) {
       // Instructor is logging you out because this failed
       helpMeInstructor(err);
       return err;
+    }
+  }
+
+  async googleLogin() {
+    try {
+      const res = await this.axiosInstance.get(`auth/google/login`,
+        {
+          timeout: 30000,
+          headers: {
+            accept: "*/*",
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      );
+      return res;
+    } catch (err) {
+      helpMeInstructor(err);
+      return err;
+    }
+  }
+
+  async googleCallback({ code, scope }) {
+    try {
+      const res = await this.axiosInstance.get(
+        `/auth/google/callback?code=${code}&scope=${scope}`
+      );
+      console.log(res);
+      return res;
+    } catch (err) {
+      helpMeInstructor(err);
+      console.log(err);
     }
   }
 
@@ -172,7 +204,7 @@ class API {
       const result = await this.axiosInstance.get(`/messages/${messageId}`);
       return result;
     } catch (err) {
-      helpMeInstructor(err)
+      helpMeInstructor(err);
       return err;
     }
   }
