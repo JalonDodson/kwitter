@@ -66,18 +66,16 @@ export const ProfileScreen = ({
   }, [user]);
 
   const getPhoto = (username) => {
-    console.log(user.pictureLocation.slice(27, user.pictureLocation.length));
-    return `https://kwitter-api.herokuapp.com/users/${username}/picture?t${user.pictureLocation.slice(
-      27,
-      user.pictureLocation.length
-    )}`;
+    return `https://kwitter-api.herokuapp.com/users/${username}/picture?t=${user.pictureLocation
+      .split("?t=")
+      .pop()}`;
   };
 
   const updatePhoto = () => {
     return getPhoto(username);
   };
 
-  const uploadPhoto = async (ev) => {
+  const uploadPhoto = async () => {
     const formData = new FormData();
 
     const data = fileInput.current.files[0];
@@ -126,7 +124,6 @@ export const ProfileScreen = ({
     await api.createMessage(msg);
 
     const payload = await api.userMessages(username);
-    console.log(payload.messages[0]);
     addMessage(payload.messages[0]);
   };
   const classes = profileStyles();
@@ -148,7 +145,6 @@ export const ProfileScreen = ({
     const array = likedMessage.message.likes.filter(
       (x) => x.username === username
     );
-    console.log(likedMessage.message.id);
     likeUserMessage([likedMessage.message.id, array[0]]);
   };
 
@@ -186,7 +182,6 @@ export const ProfileScreen = ({
       await api.createMessage(msg);
 
       const payload = await api.userMessages(username);
-      console.log(payload.messages[0]);
       addMessage(payload.messages[0]);
     }
   };
@@ -222,7 +217,6 @@ export const ProfileScreen = ({
   };
 
   const submitChanges = async () => {
-    console.log(name, user.displayName);
     const about = abt === "" ? user.about : abt;
     const dName = name === "" ? user.displayName : name;
     const payload = await api.changeUserInfo(dName, about, username);
@@ -242,7 +236,6 @@ export const ProfileScreen = ({
 
   const closeConf = () => {
     setConfOpener(false);
-    console.log(confOpener);
   };
 
   const handleConfirm = () => {
@@ -250,27 +243,23 @@ export const ProfileScreen = ({
     setConfOpener(false);
     setPwOpener(true);
     setPw("");
-    console.log(confOpener, pwOpener);
   };
 
   const closePw = () => setPwOpener(false);
 
   const handlePwChange = (ev) => {
-    console.log(ev.target.value);
     setPw(ev.target.value);
   };
 
   const changePassword = () => {
     setConfOpener(true);
     handleMenuClose();
-    console.log(confOpener);
   };
 
   const confirmPw = () => {
     api.changePassword(username, pw);
     setChanged(true);
     setPwOpener(false);
-    console.log(confOpener, pwOpener);
   };
 
   const closeChange = () => {
@@ -519,13 +508,12 @@ export const ProfileScreen = ({
                 const truthy = isLiked(x.likes);
                 let photoURL = `https://kwitter-api.herokuapp.com/users/${x.username}/picture`;
                 return (
-                  <>
+                  <React.Fragment key={nanoid()}>
                     <CardContainer
                       del={() => handleDelete(x.id)}
                       like={() => handleLike(x.id)}
                       unlike={() => handleUnlike(x.id, x.likes)}
                       id={x.id}
-                      key={nanoid()}
                       displayName={x.username}
                       photoLoc={photoURL}
                       message={x.text}
@@ -533,7 +521,7 @@ export const ProfileScreen = ({
                       liked={truthy}
                     />
                     <Divider className={classes.divider} />
-                  </>
+                  </React.Fragment>
                 );
               })}
           </div>

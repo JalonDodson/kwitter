@@ -56,13 +56,12 @@ export const MenuBar = ({ isAuthenticated, logout, user, username }) => {
     updatePhoto();
     // eslint-disable-next-line
   }, [user]);
-
+  
   const getPhoto = (username) => {
     const photo = user
-      ? `https://kwitter-api.herokuapp.com/users/${username}/picture?t${user.pictureLocation.slice(
-          27,
-          user.pictureLocation.length
-        )}`
+      ? `https://kwitter-api.herokuapp.com/users/${username}/picture?t=${user.pictureLocation
+          .split("?t=")
+          .pop()}`
       : null;
     return photo;
   };
