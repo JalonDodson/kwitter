@@ -23,10 +23,9 @@ export const getUsers = () => async (dispatch, getState) => {
     const payload = await api.getUsers();
 
     dispatch({ type: USERS, payload });
-    console.log({ payload });
     return payload;
   } catch (err) {
-    console.log(err);
+    console.table(err, "Unable to get users, see error.");
   }
 };
 
@@ -36,25 +35,25 @@ export const getUser = (username) => async (dispatch, getState) => {
 
     dispatch({ type: USER, payload });
   } catch (err) {
-    console.log(err);
+    console.table(err, "Unable to get user, see error.");
   }
 };
 
-export const addPhoto = (username, photo) => async (dispatch) => {
-  try {
-    const payload = await api.addPhoto(username, photo);
+// export const addPhoto = (username, photo) => async (dispatch) => {
+//   try {
+//     const payload = await api.addPhoto(username, photo);
 
-    console.log({ payload });
-  } catch (err) {
-    console.log(err, "yes, it's an error");
-  }
-};
+//     console.log({ payload });
+//   } catch (err) {
+//     console.log(err, "yes, it's an error");
+//   }
+// };
 
 export const addMessage = (payload) => (dispatch, getState) => {
   try {
     dispatch({ type: ADD_MESSAGE, payload });
   } catch (err) {
-    console.log(err, "sorry, you have an error bud.");
+    console.table(err, "Unable to add message, see error.");
   }
 };
 
@@ -62,27 +61,23 @@ export const addCurrentMessage = (payload) => (dispatch) => {
   try {
     dispatch({ type: ADD_CURRENT_MESSAGE, payload });
   } catch (err) {
-    console.log("nice error broski");
+    console.table(err, "Unable to add current message, see error.");
   }
 };
 
 export const deleteMessage = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: DELETE_MESSAGE, id });
-
-    console.log("Message successfully deleted.");
   } catch (err) {
-    console.log(err, "Do you have authorization to delete this message, fam?");
+    console.table(err, "Unable to get messages, see error");
   }
 };
 
 export const deleteCurrentMessage = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: DELETE_CURRENT_MESSAGE, id });
-
-    console.log("Message successfully deleted.");
   } catch (err) {
-    console.log(err, "Do you have authorization to delete this message, fam?");
+    console.table(err, "Unable to delete current message, see error.");
   }
 };
 
@@ -90,10 +85,8 @@ export const userMessages = (username) => async (dispatch, getState) => {
   try {
     const payload = await api.userMessages(username);
     dispatch({ type: USER_MESSAGES, payload });
-
-    console.log({ payload });
   } catch (err) {
-    console.log(err, "damn, dog. u got an error");
+    console.table(err, "Unable to get user messages, see error");
   }
 };
 
@@ -101,18 +94,16 @@ export const getMessages = (limit = 100) => async (dispatch) => {
   try {
     const payload = await api.allMessages(limit);
     dispatch({ type: GET_MESSAGES, payload });
-    console.log({ payload });
   } catch (err) {
-    console.log(err, "please work please");
+    console.table(err, "Unable to get messages, see error");
   }
 };
 
 export const likeUserMessage = (array) => (dispatch) => {
   try {
-    console.log("test");
     dispatch({ type: LIKE_USER_MESSAGE, array });
   } catch (err) {
-    console.log(err, "test");
+    console.table(err, "User message not liked, see error");
   }
 };
 
@@ -121,25 +112,22 @@ export const unlikeUserMessage = (payload) => (dispatch) => {
     console.log("plz?");
     dispatch({ type: UNLIKE_USER_MESSAGE, payload });
   } catch (err) {
-    console.log(err, "plz.");
+    console.table(err, "User message not unliked, see error");
   }
 };
 
-
 export const likeCurrentMessage = (array) => (dispatch) => {
   try {
-    console.log("test");
     dispatch({ type: LIKE_CURRENT_MESSAGE, array });
   } catch (err) {
-    console.log(err, "test");
+    console.table(err, "Current message not liked, see error");
   }
 };
 
 export const unlikeCurrentMessage = (payload) => (dispatch) => {
   try {
-    console.log("plz?");
     dispatch({ type: UNLIKE_CURRENT_MESSAGE, payload });
   } catch (err) {
-    console.log(err, "plz.");
+    console.table(err, "Current message not unliked, see error");
   }
 };

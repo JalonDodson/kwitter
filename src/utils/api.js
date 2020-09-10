@@ -43,7 +43,6 @@ class API {
         username,
         password,
       });
-      console.log(result);
       return result;
     } catch (err) {
       // Instructor is logging you out because this failed
@@ -113,7 +112,6 @@ class API {
   async getUsers() {
     try {
       const result = await this.axiosInstance.get("/users?limit=9999");
-      console.log("Where am I coming from?", result);
       return result;
     } catch (err) {
       helpMeInstructor(err);
@@ -124,8 +122,6 @@ class API {
   async getUser(username) {
     try {
       const result = await this.axiosInstance.get(`/users/${username}`);
-      // const result = await this.axiosInstance.get(`/users/${username}`);
-
       return result;
     } catch (err) {
       helpMeInstructor(err);
@@ -144,7 +140,6 @@ class API {
           },
         }
       );
-      console.log(result);
       return result;
     } catch (err) {
       helpMeInstructor(err);

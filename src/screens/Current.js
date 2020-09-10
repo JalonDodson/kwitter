@@ -15,7 +15,6 @@ import TextField from "@material-ui/core/TextField";
 import { currentStyles } from "../hooks/currentStyles";
 
 export const CurrentScreen = ({
-  deleteMessage,
   deleteCurrentMessage,
   username,
   all,
@@ -43,7 +42,6 @@ export const CurrentScreen = ({
       await api.createMessage(msg);
 
       const payload = await api.userMessages(username);
-      console.log(payload.messages[0]);
       addCurrentMessage(payload.messages[0]);
     }
   };
@@ -54,7 +52,6 @@ export const CurrentScreen = ({
     await api.createMessage(msg);
 
     const payload = await api.userMessages(username);
-    console.log(payload.messages[0]);
     addCurrentMessage(payload.messages[0]);
   };
 
@@ -64,13 +61,17 @@ export const CurrentScreen = ({
     ev.target.value = "";
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this message?")) {
-      await api.deleteMessage(id);
+  const handleDelete = async (msg) => {
+    if (msg.username === username) {
+      if (window.confirm("Are you sure you want to delete this message?")) {
+        await api.deleteMessage(msg.id);
 
-      deleteCurrentMessage(id);
+        deleteCurrentMessage(msg.id);
+      } else {
+        console.log("The message was not deleted, nothing happened.");
+      }
     } else {
-      console.log("The message was not deleted, nothing happened.");
+      console.log("User does not have permission to delete -- aborting.");
     }
   };
 
@@ -81,7 +82,6 @@ export const CurrentScreen = ({
     const array = likedMessage.message.likes.filter(
       (x) => x.username === username
     );
-    console.log(likedMessage.message.id);
     likeCurrentMessage([likedMessage.message.id, array[0]]);
   };
 
@@ -97,13 +97,13 @@ export const CurrentScreen = ({
   };
 
   const isLiked = (likes) => {
-    let nerdy = false;
+    let liked = false;
     for (let i = 0; i < likes.length; i++) {
       if (likes[i].username === username) {
-        nerdy = true;
+        liked = true;
       }
     }
-    return nerdy;
+    return liked;
   };
 
   return (
@@ -134,16 +134,15 @@ export const CurrentScreen = ({
             What your friends are talking about...
           </Typography>
           {/* <MusicPlayer /> */}
-          <div id="fuck" key={nanoid()}>
+          <div>
             {all.messages &&
               all.messages.map((x) => {
                 const truthy = isLiked(x.likes);
                 let photoURL = `https://kwitter-api.herokuapp.com/users/${x.username}/picture`;
-                console.log("please ignore the 404's");
                 return (
-                  <>
+                  <React.Fragment key={nanoid()}>
                     <CardContainer
-                      del={() => handleDelete(x.id)}
+                      del={() => handleDelete(x)}
                       like={() => handleLike(x.id)}
                       unlike={() => handleUnlike(x.id, x.likes)}
                       id={x.id}
@@ -155,7 +154,7 @@ export const CurrentScreen = ({
                       liked={truthy}
                     />
                     <Divider className={classes.divider} />
-                  </>
+                  </React.Fragment>
                 );
               })}
           </div>
