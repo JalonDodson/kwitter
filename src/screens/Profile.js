@@ -461,8 +461,8 @@ export const ProfileScreen = ({
           )}
           <div>
             {greeting()}
-            {user.pictureLocation !== null ? userPic() : defaultPic()}
 
+            {user.pictureLocation !== null ? userPic() : defaultPic()}
             <form onSubmit={submitMsg}>
               <TextField
                 label="What's on your mind?"
