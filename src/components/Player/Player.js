@@ -4,7 +4,7 @@ import { MenuContainer } from "../";
 
 import './Player.css';
 
-const videoList = [];
+// const videoList = [];
 
 export const Player = () => {
     return (
