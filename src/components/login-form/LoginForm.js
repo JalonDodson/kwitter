@@ -1,7 +1,7 @@
-                  import React, { useState } from "react";
+import React, { useState } from "react";
 import ProptTypes from "prop-types";
 import "./LoginForm.css";
-
+// import { google } from "googleapis";
 // material-ui stuff
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -65,6 +65,13 @@ export const LoginForm = ({ login, loading, error, register, getUser }) => {
       setFailure(false);
     }
   };
+
+  function onSignIn(googleUser) {
+    let profile = googleUser.getBasicProfile();
+    console.log(profile.getId());
+    console.log(profile.getImageUrl());
+    console.log(profile.getName());
+  }
 
   const handleRegister = (event) => {
     event.preventDefault();
