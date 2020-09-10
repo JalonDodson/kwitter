@@ -38,6 +38,8 @@ export const ProfileScreen = ({
   user,
   logout,
   getUser,
+  likeUserMessage,
+  unlikeUserMessage,
 }) => {
   // material-ui handlers
   const Transition = React.forwardRef(function Transition(props, ref) {
@@ -55,7 +57,6 @@ export const ProfileScreen = ({
     setAnchorEl(null);
   };
 
-  const [cnt, setCnt] = useState(0);
   const [msg, setMsg] = useState("");
 
   // photos
@@ -117,38 +118,52 @@ export const ProfileScreen = ({
   useEffect(() => {
     userMessages(username);
     // eslint-disable-next-line
-  }, [cnt]);
+  }, []);
 
-  const submitMsg = (ev) => {
+  const submitMsg = async (ev) => {
     ev.preventDefault();
 
-    addMessage(msg);
-    setCnt((c) => c + 1);
+    await api.createMessage(msg);
+
+    const payload = await api.userMessages(username);
+    console.log(payload.messages[0]);
+    addMessage(payload.messages[0]);
   };
   const classes = profileStyles();
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this message?")) {
-      deleteMessage(id);
+      await api.deleteMessage(id);
 
-      setCnt((c) => c + 1);
+      deleteMessage(id);
     } else {
       console.log("The message was not deleted, nothing happened.");
     }
   };
 
-  const handleLike = (id) => {
-    api.likeMessage(id);
-    setCnt((c) => c + 1);
+  const handleLike = async (id) => {
+    await api.likeMessage(id);
+
+    const likedMessage = await api.getMessage(id);
+    const array = likedMessage.message.likes.filter(
+      (x) => x.username === username
+    );
+    console.log(likedMessage.message.id);
+    likeUserMessage([likedMessage.message.id, array[0]]);
   };
 
-  const handleUnlike = (id) => {
-    for (let i = 0; i < id.length; i++) {
-      if (id[i].username === username) {
-        api.unlikeMessage(id[i].id);
+  const handleUnlike = async (messageId, likeId) => {
+    for (let i = 0; i < likeId.length; i++) {
+      if (likeId[i].username === username) {
+        api.unlikeMessage(likeId[i].id);
+
+        const payload = [messageId, likeId[i].id];
+        unlikeUserMessage(payload);
       }
     }
-    setCnt((c) => c + 1);
+
+    // const likedMessage = await api.getMessage(id);
+    // const array = likedMessage.message.likes.filter((x) => x.username === username);
   };
 
   const isLiked = (likes) => {
@@ -161,13 +176,18 @@ export const ProfileScreen = ({
     return nerdy;
   };
 
-  const enterMsg = (ev) => {
+  const enterMsg = async (ev) => {
     if (ev.key === "Enter") {
-      addMessage(ev.target.value);
+      ev.preventDefault();
 
-      setCnt((c) => c + 1);
+      const msg = ev.target.value;
       ev.target.value = "";
-      ev.target.blur();
+
+      await api.createMessage(msg);
+
+      const payload = await api.userMessages(username);
+      console.log(payload.messages[0]);
+      addMessage(payload.messages[0]);
     }
   };
 
@@ -503,7 +523,7 @@ export const ProfileScreen = ({
                     <CardContainer
                       del={() => handleDelete(x.id)}
                       like={() => handleLike(x.id)}
-                      unlike={() => handleUnlike(x.likes)}
+                      unlike={() => handleUnlike(x.id, x.likes)}
                       id={x.id}
                       key={nanoid()}
                       displayName={x.username}

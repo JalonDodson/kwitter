@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../utils/api";
 import { nanoid } from "nanoid";
-// import { NewsFeed } from '../components';
+
 import { MenuContainer } from "../components";
 import { CardContainer } from "../components/Card";
 
@@ -14,54 +14,48 @@ import TextField from "@material-ui/core/TextField";
 
 import { currentStyles } from "../hooks/currentStyles";
 
-// import Stream from "../components/Stream/Stream";
-
-// import { MusicPlayer } from '../Player';
-
 export const CurrentScreen = ({
-  addMessage,
   deleteMessage,
+  deleteCurrentMessage,
   username,
   all,
   getMessages,
+  addCurrentMessage,
+  likeCurrentMessage,
+  unlikeCurrentMessage,
 }) => {
   const classes = currentStyles();
-  const [count, setCount] = useState(0);
   const [msg, setMsg] = useState("");
   const [currentNum, setCurrentNum] = useState(100);
 
   useEffect(() => {
     getMessages(currentNum);
     // eslint-disable-next-line
-  }, [count, currentNum]);
+  }, [currentNum]);
 
-
-  const enterMsg = (ev) => {
+  const enterMsg = async (ev) => {
     if (ev.key === "Enter") {
-      addMessage(ev.target.value);
+      ev.preventDefault();
 
-      setCount((c) => c + 1);
+      const msg = ev.target.value;
       ev.target.value = "";
-      ev.target.blur();
+
+      await api.createMessage(msg);
+
+      const payload = await api.userMessages(username);
+      console.log(payload.messages[0]);
+      addCurrentMessage(payload.messages[0]);
     }
   };
 
-  // const hasPhoto = async (username) => {
-  //     let userPhoto = "";
-  //     const usr = await api.user(username);
-  //     if (usr.user.pictureLocation) {
-  //         userPhoto = usr.user.username;
-  //     } else {
-  //         return "banana";
-  //     }
-  //     return userPhoto;
-  // }
-
-  const submitMsg = (ev) => {
+  const submitMsg = async (ev) => {
     ev.preventDefault();
 
-    addMessage(msg);
-    setCount((c) => c + 1);
+    await api.createMessage(msg);
+
+    const payload = await api.userMessages(username);
+    console.log(payload.messages[0]);
+    addCurrentMessage(payload.messages[0]);
   };
 
   const handleMsg = (ev) => {
@@ -70,28 +64,36 @@ export const CurrentScreen = ({
     ev.target.value = "";
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this message?")) {
-      deleteMessage(id);
+      await api.deleteMessage(id);
 
-      setCount((c) => c + 1);
+      deleteCurrentMessage(id);
     } else {
       console.log("The message was not deleted, nothing happened.");
     }
   };
 
-  const handleLike = (id) => {
-    api.likeMessage(id);
-    setCount((c) => c + 1);
+  const handleLike = async (id) => {
+    await api.likeMessage(id);
+
+    const likedMessage = await api.getMessage(id);
+    const array = likedMessage.message.likes.filter(
+      (x) => x.username === username
+    );
+    console.log(likedMessage.message.id);
+    likeCurrentMessage([likedMessage.message.id, array[0]]);
   };
 
-  const handleUnlike = (id) => {
-    for (let i = 0; i < id.length; i++) {
-      if (id[i].username === username) {
-        api.unlikeMessage(id[i].id);
+  const handleUnlike = async (messageId, likeId) => {
+    for (let i = 0; i < likeId.length; i++) {
+      if (likeId[i].username === username) {
+        api.unlikeMessage(likeId[i].id);
+
+        const payload = [messageId, likeId[i].id];
+        unlikeCurrentMessage(payload);
       }
     }
-    setCount((c) => c + 1);
   };
 
   const isLiked = (likes) => {
@@ -143,7 +145,7 @@ export const CurrentScreen = ({
                     <CardContainer
                       del={() => handleDelete(x.id)}
                       like={() => handleLike(x.id)}
-                      unlike={() => handleUnlike(x.likes)}
+                      unlike={() => handleUnlike(x.id, x.likes)}
                       id={x.id}
                       key={nanoid()}
                       displayName={x.username}

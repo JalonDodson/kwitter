@@ -133,16 +133,6 @@ class API {
     }
   }
 
-  // async getPhoto(username) {
-  //   try {
-  //     const result = await this.axiosInstance.get(`/users/${username}/picture`);
-  //     return result;
-  //   } catch (err) {
-  //     helpMeInstructor(err);
-  //     console.log("Bruh we really got another error");
-  //   }
-  // }
-
   async addPhoto(username, photo) {
     try {
       const result = await this.axiosInstance.put(
@@ -178,6 +168,16 @@ class API {
       await this.axiosInstance.delete(`/messages/${messageId}`);
     } catch (err) {
       helpMeInstructor(err);
+      return err;
+    }
+  }
+
+  async getMessage(messageId) {
+    try {
+      const result = await this.axiosInstance.get(`/messages/${messageId}`);
+      return result;
+    } catch (err) {
+      helpMeInstructor(err)
       return err;
     }
   }
