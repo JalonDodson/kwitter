@@ -66,9 +66,13 @@ export const ProfileScreen = ({
   }, [user]);
 
   const getPhoto = (username) => {
-    return `https://kwitter-api.herokuapp.com/users/${username}/picture?t=${user.pictureLocation
-      .split("?t=")
-      .pop()}`;
+    const photo =
+      user.pictureLocation !== null
+        ? `https://kwitter-api.herokuapp.com/users/${username}/picture?t=${user.pictureLocation
+            .split("?t=")
+            .pop()}`
+        : null;
+    return photo;
   };
 
   const updatePhoto = () => {
