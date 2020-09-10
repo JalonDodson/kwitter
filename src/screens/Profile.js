@@ -66,13 +66,29 @@ export const ProfileScreen = ({
   }, [user]);
 
   const getPhoto = (username) => {
-    return `https://kwitter-api.herokuapp.com/users/${username}/picture?t=${user.pictureLocation
-      .split("?t=")
-      .pop()}`;
+    const photo =
+      user.pictureLocation !== null
+        ? `https://kwitter-api.herokuapp.com/users/${username}/picture?t=${user.pictureLocation
+            .split("?t=")
+            .pop()}`
+        : null;
+    return photo;
   };
 
   const updatePhoto = () => {
     return getPhoto(username);
+  };
+  const [uploadFailed, setUploadFailed] = useState(false);
+  const isSupported = (file) => {
+    switch (file) {
+      case "image/gif":
+      case "image/jpeg":
+      case "image/jpg":
+      case "image/png":
+        return true;
+      default:
+    }
+    return false;
   };
 
   const uploadPhoto = async () => {
@@ -80,13 +96,24 @@ export const ProfileScreen = ({
 
     const data = fileInput.current.files[0];
 
-    formData.append("picture", data);
+    if (data.size < 200000 && isSupported(data.type)) {
+      formData.append("picture", data);
+      const payload = await api.addPhoto(username, formData);
+      if (payload) {
+        getUser(username);
 
-    const payload = await api.addPhoto(username, formData);
-    if (payload) {
-      getUser(username);
+        setUploadFailed(false);
+      }
+    } else {
+      setUploadFailed(true);
     }
+
     // setUploader(false);
+  };
+
+  const closeUpload = async () => {
+    setUploadFailed(false);
+    return;
   };
 
   const userPic = () => {
@@ -308,6 +335,33 @@ export const ProfileScreen = ({
             <MenuItem onClick={changePassword}>Change Password</MenuItem>
             <MenuItem onClick={handleAccountDeletion}>Delete Account</MenuItem>
           </Menu>
+          {uploadFailed && (
+            <Dialog
+              open={uploadFailed}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={closeUpload}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogTitle id="alert-dialog-slide-title">
+                {"Upload Failed"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                  Oh no! The file you tried to upload appears to be too big—our
+                  tortoises were unable to process it! Please ensure that the
+                  file you uploaded is less than 200 kilobytes (KB) in size and
+                  is one of the supported types: .JPEG, .PNG, or .GIF.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={closeUpload} color="primary">
+                  Acknowledge
+                </Button>
+              </DialogActions>
+            </Dialog>
+          )}
           {accOpener && (
             <Dialog
               open={accOpener}
@@ -461,8 +515,8 @@ export const ProfileScreen = ({
           )}
           <div>
             {greeting()}
-            {user.pictureLocation !== null ? userPic() : defaultPic()}
 
+            {user.pictureLocation !== null ? userPic() : defaultPic()}
             <form onSubmit={submitMsg}>
               <TextField
                 label="What's on your mind?"
@@ -490,6 +544,7 @@ export const ProfileScreen = ({
               >
                 <input
                   type="file"
+                  accept=".jpeg,.jpg,.gif,.png"
                   id="file-upload"
                   ref={fileInput}
                   onChange={uploadPhoto}

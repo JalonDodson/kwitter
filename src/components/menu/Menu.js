@@ -58,11 +58,11 @@ export const MenuBar = ({ isAuthenticated, logout, user, username }) => {
   }, [user]);
   
   const getPhoto = (username) => {
-    const photo = user
+    const photo = (user.pictureLocation !== null
       ? `https://kwitter-api.herokuapp.com/users/${username}/picture?t=${user.pictureLocation
           .split("?t=")
           .pop()}`
-      : null;
+      : null);
     return photo;
   };
 
