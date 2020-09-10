@@ -54,15 +54,7 @@ class API {
 
   async googleLogin() {
     try {
-      const res = await this.axiosInstance.get(`auth/google/login`,
-        {
-          timeout: 30000,
-          headers: {
-            accept: "*/*",
-            Authorization: `Bearer ${getToken()}`,
-          },
-        }
-      );
+      const res = await this.axiosInstance.get(`auth/google/login`);
       return res;
     } catch (err) {
       helpMeInstructor(err);

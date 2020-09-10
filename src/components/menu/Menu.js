@@ -58,7 +58,7 @@ export const MenuBar = ({ isAuthenticated, logout, user, username }) => {
   }, [user]);
   
   const getPhoto = (username) => {
-    const photo = (user.pictureLocation !== null
+    const photo = (user
       ? `https://kwitter-api.herokuapp.com/users/${username}/picture?t=${user.pictureLocation
           .split("?t=")
           .pop()}`

@@ -31,17 +31,17 @@ export const login = (credentials) => async (dispatch, getState) => {
   }
 };
 
-export const googleLogin = () => async (dispatch) => {
-  try {
-    dispatch({ type: GOOGLE_LOGIN });
+// export const googleLogin = () => async (dispatch) => {
+//   try {
+//     dispatch({ type: GOOGLE_LOGIN });
 
-    const payload = await api.googleLogin();
-    console.log(payload);
-    // dispatch ({ type: GOOGLE_SUCCESS, payload });
-  } catch (err) {
-    console.log(err)
-  }
-}
+//     const payload = await api.googleLogin();
+//     console.log(payload);
+//     // dispatch ({ type: GOOGLE_SUCCESS, payload });
+//   } catch (err) {
+//     console.log(err)
+//   }
+// }
 
 export const logout = () => async (dispatch, getState) => {
   try {

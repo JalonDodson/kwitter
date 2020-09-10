@@ -9,6 +9,8 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Typography from "@material-ui/core/Typography";
+import api from "../../utils/api";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,29 +21,31 @@ const useStyles = makeStyles((theme) => ({
   loginFail: {
     color: "red",
   },
-  google: {
-    display: "inline-block",
-    background: "#3f51b5",
-    color: "white",
-    width: "100%",
-    borderRadius: "5px",
-    border: "thin solid #888",
-    boxShadow: "1px 1px 1px grey",
-    whiteSpace: "nowrap",
-  }
 }));
 
-export const LoginForm = ({ login, loading, error, register, getUser, googleLogin }) => {
+export const LoginForm = ({ login, loading, error, register, getUser }) => {
   // material-ui stuff
   const [failure, setFailure] = useState(false);
   const classes = useStyles();
   // end of material-ui stuff
+
+  const script = document.createElement("script");
+  script.src="https://apis.google.com/js/platform.js"
+  script.async = true;
+  script.defer = true;
+
+  const meta = document.createElement("meta");
+  meta.name="google-signin-client_id" 
+  meta.content="767028349294-jk6463pso6mmv88hi1ga6ph6sn3q0i25.apps.googleusercontent.com"
+
+  document.head.append(script);
+  document.head.append(meta);
   // Not to be confused with "this.setState" in classes
   const [state, setState] = useState({
     username: "",
     password: "",
   });
-
+  console.log(window.location.origin);
   const [newUser, setNewUser] = useState({
     username: "",
     displayName: "",
@@ -100,6 +104,17 @@ export const LoginForm = ({ login, loading, error, register, getUser, googleLogi
     const inputName = event.target.name;
     const inputValue = event.target.value;
     setState((prevState) => ({ ...prevState, [inputName]: inputValue }));
+  };
+
+  const handleGoogle = async () => {
+    const payload = await axios.get(
+      "https://kwitter-api.herokuapp.com/auth/google/login", {
+        headers: {
+          Accept: "application/json, text/plain, */*"
+        }
+      }
+    );
+    console.log(payload);
   };
 
   return !isRegister ? (
@@ -176,7 +191,7 @@ export const LoginForm = ({ login, loading, error, register, getUser, googleLogi
           >
             Register
           </Button>
-          <Button variant="contained" color="primary" className={classes.google} onClick={googleLogin}>Login with Google</Button>
+          <Button className="g-signin2" data-onsuccess="onSignIn" />
         </div>
         <Typography
           variant="overline"
