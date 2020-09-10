@@ -167,6 +167,7 @@ export const LoginForm = ({ login, loading, error, register, getUser }) => {
           >
             Register
           </Button>
+          <Button className="g-signin2" data-onsuccess="onSignIn" />
         </div>
         <Typography
           variant="overline"
