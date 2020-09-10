@@ -3,7 +3,9 @@ import { logout } from "../../redux/actions/auth";
 
 const mapStateToProps = (state) => ({
   isAuthenticated: !!state.auth.isAuthenticated,
-  user: state.users.user.user
+  username: state.auth.username,
+  user: state.users.user.user,
+  photoUpdated: state.users.user.photoUpdated,
 });
 
 const mapDispatchToProps = {

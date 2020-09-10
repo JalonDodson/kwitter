@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const LoginForm = ({ login, loading, error, register, user }) => {
+export const LoginForm = ({ login, loading, error, register, getUser }) => {
   // material-ui stuff
   const [failure, setFailure] = useState(false);
   const classes = useStyles();
@@ -52,14 +52,14 @@ export const LoginForm = ({ login, loading, error, register, user }) => {
     event.preventDefault();
 
     if (called === false) {
-      user(state.username);
+      getUser(state.username);
       login(state);
       setTimeout(() => {
         setCalled(true);
         setFailure(true);
       }, 1000);
     } else {
-      user(state.username);
+      getUser(state.username);
       login(state);
       setCalled(false);
       setFailure(false);

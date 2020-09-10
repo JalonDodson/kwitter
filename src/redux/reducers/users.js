@@ -5,6 +5,7 @@ import { USERS, USER } from "../actions";
 const INITIAL_STATE = {
   user: {},
   users: [{}],
+  // userPhoto: {},
 };
 
 export const usersReducer = (state = INITIAL_STATE, action) => {
@@ -19,6 +20,11 @@ export const usersReducer = (state = INITIAL_STATE, action) => {
         ...INITIAL_STATE,
         user: action.payload,
       };
+    // case USER_PHOTO: {
+    //   return {
+    //     userPhoto: action.payload,
+    //   };
+    // }
     default:
       return state;
   }

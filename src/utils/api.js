@@ -110,7 +110,7 @@ class API {
     }
   }
 
-  async users() {
+  async getUsers() {
     try {
       const result = await this.axiosInstance.get("/users?limit=9999");
       console.log("Where am I coming from?", result);
@@ -121,7 +121,7 @@ class API {
     }
   }
 
-  async user(username) {
+  async getUser(username) {
     try {
       const result = await this.axiosInstance.get(`/users/${username}`);
       // const result = await this.axiosInstance.get(`/users/${username}`);
@@ -131,16 +131,6 @@ class API {
       helpMeInstructor(err);
       return err;
     }
-  }
-
-  async getPhoto(username) {
-    await this.axiosInstance
-      .get(`/users/${username}/picture`)
-      .then((res) => res)
-      .catch(function (err) {
-        helpMeInstructor(err);
-        console.log(err);
-      });
   }
 
   async addPhoto(username, photo) {
@@ -178,6 +168,16 @@ class API {
       await this.axiosInstance.delete(`/messages/${messageId}`);
     } catch (err) {
       helpMeInstructor(err);
+      return err;
+    }
+  }
+
+  async getMessage(messageId) {
+    try {
+      const result = await this.axiosInstance.get(`/messages/${messageId}`);
+      return result;
+    } catch (err) {
+      helpMeInstructor(err)
       return err;
     }
   }

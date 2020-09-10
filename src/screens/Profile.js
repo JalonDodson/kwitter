@@ -37,6 +37,9 @@ export const ProfileScreen = ({
   username,
   user,
   logout,
+  getUser,
+  likeUserMessage,
+  unlikeUserMessage,
 }) => {
   // material-ui handlers
   const Transition = React.forwardRef(function Transition(props, ref) {
@@ -53,22 +56,57 @@ export const ProfileScreen = ({
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  const [cnt, setCnt] = useState(0);
-  const [msg, setMsg] = useState("");
-  const [uploader, setUploader] = useState(false);
-  const getPhoto = (username) =>
-    `https://kwitter-api.herokuapp.com/users/${username}/picture`;
 
-  const uploadPhoto = () => {
+  const [msg, setMsg] = useState("");
+
+  // photos
+  useEffect(() => {
+    updatePhoto();
+    // eslint-disable-next-line
+  }, [user]);
+
+  const getPhoto = (username) => {
+    console.log(user.pictureLocation.slice(27, user.pictureLocation.length));
+    return `https://kwitter-api.herokuapp.com/users/${username}/picture?t${user.pictureLocation.slice(
+      27,
+      user.pictureLocation.length
+    )}`;
+  };
+
+  const updatePhoto = () => {
+    return getPhoto(username);
+  };
+
+  const uploadPhoto = async (ev) => {
     const formData = new FormData();
 
     const data = fileInput.current.files[0];
 
     formData.append("picture", data);
 
-    api.addPhoto(username, formData);
+    const payload = await api.addPhoto(username, formData);
+    if (payload) {
+      getUser(username);
+    }
+    // setUploader(false);
+  };
 
-    setUploader(false);
+  const userPic = () => {
+    return (
+      <Avatar
+        className={classes.largeAvi}
+        alt={user.displayName}
+        src={updatePhoto()}
+      ></Avatar>
+    );
+  };
+
+  const defaultPic = () => {
+    return (
+      <Avatar className={classes.large}>
+        {user.displayName[0].toUpperCase()}
+      </Avatar>
+    );
   };
 
   const handleMsg = (ev) => {
@@ -80,38 +118,52 @@ export const ProfileScreen = ({
   useEffect(() => {
     userMessages(username);
     // eslint-disable-next-line
-  }, [cnt]);
+  }, []);
 
-  const submitMsg = (ev) => {
+  const submitMsg = async (ev) => {
     ev.preventDefault();
 
-    addMessage(msg);
-    setCnt((c) => c + 1);
+    await api.createMessage(msg);
+
+    const payload = await api.userMessages(username);
+    console.log(payload.messages[0]);
+    addMessage(payload.messages[0]);
   };
   const classes = profileStyles();
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this message?")) {
-      deleteMessage(id);
+      await api.deleteMessage(id);
 
-      setCnt((c) => c + 1);
+      deleteMessage(id);
     } else {
       console.log("The message was not deleted, nothing happened.");
     }
   };
 
-  const handleLike = (id) => {
-    api.likeMessage(id);
-    setCnt((c) => c + 1);
+  const handleLike = async (id) => {
+    await api.likeMessage(id);
+
+    const likedMessage = await api.getMessage(id);
+    const array = likedMessage.message.likes.filter(
+      (x) => x.username === username
+    );
+    console.log(likedMessage.message.id);
+    likeUserMessage([likedMessage.message.id, array[0]]);
   };
 
-  const handleUnlike = (id) => {
-    for (let i = 0; i < id.length; i++) {
-      if (id[i].username === username) {
-        api.unlikeMessage(id[i].id);
+  const handleUnlike = async (messageId, likeId) => {
+    for (let i = 0; i < likeId.length; i++) {
+      if (likeId[i].username === username) {
+        api.unlikeMessage(likeId[i].id);
+
+        const payload = [messageId, likeId[i].id];
+        unlikeUserMessage(payload);
       }
     }
-    setCnt((c) => c + 1);
+
+    // const likedMessage = await api.getMessage(id);
+    // const array = likedMessage.message.likes.filter((x) => x.username === username);
   };
 
   const isLiked = (likes) => {
@@ -124,13 +176,18 @@ export const ProfileScreen = ({
     return nerdy;
   };
 
-  const enterMsg = (ev) => {
+  const enterMsg = async (ev) => {
     if (ev.key === "Enter") {
-      addMessage(ev.target.value);
+      ev.preventDefault();
 
-      setCnt((c) => c + 1);
+      const msg = ev.target.value;
       ev.target.value = "";
-      ev.target.blur();
+
+      await api.createMessage(msg);
+
+      const payload = await api.userMessages(username);
+      console.log(payload.messages[0]);
+      addMessage(payload.messages[0]);
     }
   };
 
@@ -138,6 +195,14 @@ export const ProfileScreen = ({
   const [accOpener, setAccOpener] = useState(false);
   const [abt, setAbt] = useState("");
   const [name, setName] = useState("");
+
+  const greeting = () => {
+    return (
+      <Typography variant="h1" id="welcome">
+        Welcome to Kwitter, {user.displayName}!
+      </Typography>
+    );
+  };
 
   const handleAccChange = () => {
     setAccOpener(true);
@@ -156,14 +221,17 @@ export const ProfileScreen = ({
     setAbt(ev.target.value);
   };
 
-  const submitChanges = () => {
+  const submitChanges = async () => {
+    console.log(name, user.displayName);
     const about = abt === "" ? user.about : abt;
     const dName = name === "" ? user.displayName : name;
-    api.changeUserInfo(dName, about, username);
-    user(username);
-    setAccOpener(false);
-    setName("");
-    setAbt("");
+    const payload = await api.changeUserInfo(dName, about, username);
+    if (payload) {
+      getUser(username);
+      setAccOpener(false);
+      setName("");
+      setAbt("");
+    }
   };
 
   // password handlers
@@ -174,13 +242,15 @@ export const ProfileScreen = ({
 
   const closeConf = () => {
     setConfOpener(false);
+    console.log(confOpener);
   };
 
   const handleConfirm = () => {
-    user(username);
+    getUser(username);
     setConfOpener(false);
     setPwOpener(true);
     setPw("");
+    console.log(confOpener, pwOpener);
   };
 
   const closePw = () => setPwOpener(false);
@@ -193,12 +263,14 @@ export const ProfileScreen = ({
   const changePassword = () => {
     setConfOpener(true);
     handleMenuClose();
+    console.log(confOpener);
   };
 
   const confirmPw = () => {
     api.changePassword(username, pw);
     setChanged(true);
     setPwOpener(false);
+    console.log(confOpener, pwOpener);
   };
 
   const closeChange = () => {
@@ -399,20 +471,8 @@ export const ProfileScreen = ({
             </Dialog>
           )}
           <div>
-            <Typography variant="h1" id="welcome">
-              Welcome to Kwitter, {user.displayName}!
-            </Typography>
-            {user.pictureLocation !== null ? (
-              <Avatar
-                className={classes.largeAvi}
-                alt={user.displayName}
-                src={getPhoto(username)}
-              ></Avatar>
-            ) : (
-              <Avatar className={classes.large}>
-                {user.displayName[0].toUpperCase()}
-              </Avatar>
-            )}
+            {greeting()}
+            {user.pictureLocation !== null ? userPic() : defaultPic()}
 
             <form onSubmit={submitMsg}>
               <TextField
@@ -433,32 +493,21 @@ export const ProfileScreen = ({
               </Button>
             </form>
             <form className={classes.photoContainer}>
-              {!uploader ? (
-                <Button
-                  className={classes.photoBtn}
-                  type="button"
-                  variant="contained"
-                  onClick={() => setUploader(true)}
-                >
-                  Change Photo
-                </Button>
-              ) : (
-                <Button
-                  className={classes.photoBtn}
-                  variant="contained"
-                  component="label"
-                  startIcon={<CloudUploadIcon />}
-                >
-                  <input
-                    type="file"
-                    id="file-upload"
-                    ref={fileInput}
-                    onChange={uploadPhoto}
-                    style={{ display: "none" }}
-                  />
-                  Upload Photo
-                </Button>
-              )}
+              <Button
+                className={classes.photoBtn}
+                variant="contained"
+                component="label"
+                startIcon={<CloudUploadIcon />}
+              >
+                <input
+                  type="file"
+                  id="file-upload"
+                  ref={fileInput}
+                  onChange={uploadPhoto}
+                  style={{ display: "none" }}
+                />
+                Upload Photo
+              </Button>
             </form>
             <br />
             <Divider />
@@ -474,7 +523,7 @@ export const ProfileScreen = ({
                     <CardContainer
                       del={() => handleDelete(x.id)}
                       like={() => handleLike(x.id)}
-                      unlike={() => handleUnlike(x.likes)}
+                      unlike={() => handleUnlike(x.id, x.likes)}
                       id={x.id}
                       key={nanoid()}
                       displayName={x.username}
