@@ -9,8 +9,8 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Typography from "@material-ui/core/Typography";
-import api from "../../utils/api";
 import axios from "axios";
+import api from "../../utils/api";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
   loginFail: {
     color: "red",
   },
+  google: {
+    width: "100%",
+  },
 }));
 
 export const LoginForm = ({ login, loading, error, register, getUser }) => {
@@ -29,17 +32,6 @@ export const LoginForm = ({ login, loading, error, register, getUser }) => {
   const classes = useStyles();
   // end of material-ui stuff
 
-  const script = document.createElement("script");
-  script.src="https://apis.google.com/js/platform.js"
-  script.async = true;
-  script.defer = true;
-
-  const meta = document.createElement("meta");
-  meta.name="google-signin-client_id" 
-  meta.content="767028349294-jk6463pso6mmv88hi1ga6ph6sn3q0i25.apps.googleusercontent.com"
-
-  document.head.append(script);
-  document.head.append(meta);
   // Not to be confused with "this.setState" in classes
   const [state, setState] = useState({
     username: "",
@@ -107,14 +99,8 @@ export const LoginForm = ({ login, loading, error, register, getUser }) => {
   };
 
   const handleGoogle = async () => {
-    const payload = await axios.get(
-      "https://kwitter-api.herokuapp.com/auth/google/login", {
-        headers: {
-          Accept: "application/json, text/plain, */*"
-        }
-      }
-    );
-    console.log(payload);
+    const payload = await api.googleLogin();
+    return payload;
   };
 
   return !isRegister ? (
@@ -191,7 +177,15 @@ export const LoginForm = ({ login, loading, error, register, getUser }) => {
           >
             Register
           </Button>
-          <Button className="g-signin2" data-onsuccess="onSignIn" />
+          <Button
+            type="button"
+            variant="contained"
+            color="primary"
+            className={classes.google}
+            onClick={handleGoogle}
+          >
+            Login with Google
+          </Button>
         </div>
         <Typography
           variant="overline"

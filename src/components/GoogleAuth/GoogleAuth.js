@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useGoogleLogin, GoogleLogin, GoogleLogout } from "react-google-login";
 
-const CLIENT_ID =
-  "581039245535-affjqmpscsb62d7f6pgkf9ij509bnsu0.apps.googleusercontent.com";
-
 export const GoogleAuth = () => {
   const [isLogged, setLogged] = useState(false);
   const [accessToken, setToken] = useState("");
