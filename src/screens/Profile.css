@@ -1,22 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap");
 
-#upload-paper {
-  margin-left: 45.5%;
-  width: 7.9%;
-  height: 50px;
-  background-color: #9ea4a52c;
-}
-
-.btn {
-  height: 25px;
-  width: 150px;
-}
-
-#welcome {
-  font-family: "Amatic SC", "Arial";
-  color: rgba(255, 255, 255, 0.521);
-  text-align: center;
-}
 
 #friends {
   font-family: "Amatic SC", "Arial";

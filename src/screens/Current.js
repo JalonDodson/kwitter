@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import api from "../utils/api";
 import { nanoid } from "nanoid";
 
-import { MenuContainer } from "../components";
 import { CardContainer } from "../components/Card";
+import { MenuContainer } from "../components";
+import { Message } from "../components/Forms/Message";
 
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
-import "./Current.css";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 
@@ -111,26 +111,9 @@ export const CurrentScreen = ({
       <MenuContainer />
       <div className={classes.root}>
         <Paper elevation={3} square={false}>
-          <form onSubmit={submitMsg}>
-            <TextField
-              label="What's on your mind?"
-              multiline
-              rows={4}
-              placeholder="Here's what I'm thinking..."
-              variant="filled"
-              className={classes.mind}
-              InputProps={{
-                className: classes.multilineColor,
-              }}
-              onKeyDown={enterMsg}
-              onBlur={handleMsg}
-            />
-            <Button type="submit" className={classes.btn}>
-              Post Message
-            </Button>
-          </form>
+      <Message submit={submitMsg} enter={enterMsg} handle={handleMsg} />     
           <Divider />
-          <Typography variant="h3" id="friends">
+          <Typography variant="h3" className={classes.friends}>
             What your friends are talking about...
           </Typography>
           {/* <MusicPlayer /> */}
@@ -147,7 +130,7 @@ export const CurrentScreen = ({
                       unlike={() => handleUnlike(x.id, x.likes)}
                       id={x.id}
                       key={nanoid()}
-                      displayName={x.username}
+                      displayName={x.displayName}
                       photoLoc={photoURL}
                       message={x.text}
                       likesCount={x.likes.length}

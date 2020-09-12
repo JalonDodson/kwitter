@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const font = "'Amatic SC', Arial";
+const font = "`Amatic SC`, Arial";
 
 export const profileStyles = makeStyles((theme) => ({
   root: {
@@ -8,8 +8,11 @@ export const profileStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     "& > *": {
       margin: theme.spacing(1),
-      marginTop: "3%",
-      width: "100%",
+      marginTop: "1vh",
+      width: "100vw", 
+      borderRadius: "5.25px",
+      boxShadow:
+        "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
       backgroundColor: "#3f51b5e1",
     },
     "& .MuiTextField-root": {
@@ -20,8 +23,13 @@ export const profileStyles = makeStyles((theme) => ({
       borderRadius: "5.25px",
       boxShadow:
         "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-      marginLeft: "40%",
+      marginLeft: "39.5vw",
     },
+  },
+  welcome: {
+    fontFamily: font,
+    color: "rgba(255, 255, 255, 0.521)",
+    textAlign: "center",
   },
   large: {
     width: theme.spacing(25),
@@ -30,8 +38,8 @@ export const profileStyles = makeStyles((theme) => ({
     backgroundColor: "#ffffffb9",
     color: "#3f51b5e1",
     float: "right",
-    marginRight: "10%",
-    marginTop: "-2.5%",
+    marginRight: "5vw",
+    marginTop: "-2.5vh",
   },
   largeAvi: {
     width: theme.spacing(25),
@@ -40,8 +48,8 @@ export const profileStyles = makeStyles((theme) => ({
     backgroundColor: "rgba(255, 255, 255, 0)",
     border: "2px solid black",
     float: "right",
-    marginRight: "10%",
-    marginTop: "-2.5%",
+    marginRight: "9.5vw",
+    marginTop: "-3.7vh",
   },
   multilineColor: {
     color: "lightskyblue",
@@ -50,35 +58,21 @@ export const profileStyles = makeStyles((theme) => ({
   },
   btn: {
     margin: theme.spacing(1),
-    width: "20%",
+    width: "19.7vw",
     textColor: "white",
     backgroundColor: "rgba(255, 255, 255, 0.550)",
     borderRadius: "5.25px",
     boxShadow:
       "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-    marginLeft: "40%",
-  },
-  photoContainer: {
-    marginLeft: "79%",
-    marginTop: "-10%",
-  },
-  photoBtn: {
-    margin: theme.spacing(1),
-    width: "50%",
-    textColor: "white",
-    backgroundColor: "rgba(255, 255, 255, 0.550)",
-    borderRadius: "5.25px",
-    boxShadow:
-      "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-  },
-  mind: {
-    marginTop: "50%",
+    marginLeft: "39.5vw",
   },
   divider: {
-    maxWidth: 500,
-    marginLeft: "36.5%",
+    opacity: 0,
+    paddingTop: "1.5vh",
+    paddingBottom: "1.5vh",
+    marginLeft: "36vw",
   },
   settings: {
     float: "right",
-  }
+  },
 }));

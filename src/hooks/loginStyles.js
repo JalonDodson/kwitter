@@ -6,25 +6,25 @@ export const loginStyles = makeStyles((theme) => ({
     },
   },
   google: {
-    marginTop: ".5em",
-    marginLeft: "2.5em",
+    marginTop: ".5vh",
+    marginLeft: "2vw",
   },
   inputs: {
     display: "flex",
     flexDirection: "column",
-    marginTop: "17.5em",
-    marginLeft: "50.5em",
-    maxWidth: "20em",
+    marginTop: "25vh",
+    marginLeft: "42.15vw",
+    maxWidth: "16.55vw",
     borderRadius: "10px",
   },
   buttons: {
-    width: "20em",
-    marginLeft: "50.5em",
+    width: "16.65vw",
+    marginLeft: "42.15vw",
     borderRadius: "10px",
   },
   loading: {
-    marginLeft: "35em",
-    marginTop: "7.5em",
+    marginLeft: "25vw",
+    marginTop: "5vh",
   },
   loginFail: {
     color: "red",
@@ -32,20 +32,20 @@ export const loginStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   login: {
-    width: "11em",
+    width: "8vw",
   },
   logo: {
-    marginLeft: "54em",
-    marginBottom: "-15em",
-    height: "12.5em",
-    width: "12.5em",
+    marginLeft: "45.5vw",
+    marginBottom: "-20vh",
+    height: "15vh",
+    width: "10vw",
   },
   register: {
-    width: "11em",
+    width: "8vw",
     float: "right",
   },
   registration: {
-    width: "23em",
+    width: "16.6vw",
   },
   success: {
     fontSize: "16px",

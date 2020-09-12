@@ -1,17 +1,21 @@
 import React, { useState, useEffect, createRef } from "react";
 
 import api from "../utils/api";
+import axios from "axios";
 import { nanoid } from "nanoid";
 
-import { MenuContainer } from "../components";
-import { CardContainer } from "../components/Card";
 import { AccountDialog } from "../components/Dialogs/AccountDialog";
-import { UploadDialog } from "../components/Dialogs/UploadDialog";
+import { CardContainer } from "../components/Card";
+import { ChangedDialog } from "../components/Dialogs/ChangedDialog";
+import { ConfirmDialog } from "../components/Dialogs/ConfirmDialog";
+import { DeleteDialog } from "../components/Dialogs/DeleteDialog";
+import { MenuContainer } from "../components";
+import { Message } from "../components/Forms/Message";
 import { PasswordDialog } from "../components/Dialogs/PasswordDialog";
+import { PhotoUpload } from "../components/Forms/PhotoUpload";
+import { UploadDialog } from "../components/Dialogs/UploadDialog";
 
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
@@ -19,13 +23,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import { profileStyles } from "../hooks/profileStyles";
 import SettingsIcon from "@material-ui/icons/Settings";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 
 import "./Profile.css";
-import { ConfirmDialog } from "../components/Dialogs/ConfirmDialog";
-import { ChangedDialog } from "../components/Dialogs/ChangedDialog";
-import { DeleteDialog } from "../components/Dialogs/DeleteDialog";
 
 const fileInput = createRef();
 
@@ -42,7 +42,7 @@ export const ProfileScreen = ({
   likeUserMessage,
   unlikeUserMessage,
 }) => {
-  // material-ui handlers
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -180,19 +180,16 @@ export const ProfileScreen = ({
         unlikeUserMessage(payload);
       }
     }
-
-    // const likedMessage = await api.getMessage(id);
-    // const array = likedMessage.message.likes.filter((x) => x.username === username);
   };
 
   const isLiked = (likes) => {
-    let nerdy = false;
+    let liked = false;
     for (let i = 0; i < likes.length; i++) {
       if (likes[i].username === username) {
-        nerdy = true;
+        liked = true;
       }
     }
-    return nerdy;
+    return liked;
   };
 
   const enterMsg = async (ev) => {
@@ -213,19 +210,6 @@ export const ProfileScreen = ({
   const [accOpener, setAccOpener] = useState(false);
   const [abt, setAbt] = useState("");
   const [name, setName] = useState("");
-
-  const greeting = () => {
-    if (isAuthenticated && user) {
-      console.log(user);
-      return (
-        <Typography variant="h1" id="welcome">
-          Welcome to Kwitter, {user.displayName}!
-        </Typography>
-      );
-    } else {
-      return null;
-    }
-  };
 
   const handleAccChange = () => {
     setAccOpener(true);
@@ -374,45 +358,12 @@ export const ProfileScreen = ({
             />
           )}
           <div>
-            {greeting()}
-
+            {user ? <Typography variant="h1" className={classes.welcome}>
+          Welcome to Kwitter, {user.displayName.split(" ")[0]}!
+        </Typography> : null }
             {user ? userPic() : defaultPic()}
-            <form onSubmit={submitMsg}>
-              <TextField
-                label="What's on your mind?"
-                multiline
-                rows={4}
-                placeholder="Here's what I'm thinking..."
-                variant="filled"
-                className={classes.mind}
-                InputProps={{
-                  className: classes.multilineColor,
-                }}
-                onKeyDown={enterMsg}
-                onBlur={handleMsg}
-              />
-              <Button type="submit" className={classes.btn}>
-                Post Message
-              </Button>
-            </form>
-            <form className={classes.photoContainer}>
-              <Button
-                className={classes.photoBtn}
-                variant="contained"
-                component="label"
-                startIcon={<CloudUploadIcon />}
-              >
-                <input
-                  type="file"
-                  accept=".jpeg,.jpg,.gif,.png"
-                  id="file-upload"
-                  ref={fileInput}
-                  onChange={uploadPhoto}
-                  style={{ display: "none" }}
-                />
-                Upload Photo
-              </Button>
-            </form>
+            <Message submit={submitMsg} enter={enterMsg} handle={handleMsg} /> 
+            <PhotoUpload file={fileInput} upload={uploadPhoto} />
             <br />
             <Divider />
             <Typography variant="h3" id="friends">
@@ -420,7 +371,7 @@ export const ProfileScreen = ({
             </Typography>
             {users.messages &&
               users.messages.map((x) => {
-                const truthy = isLiked(x.likes);
+                const liked = isLiked(x.likes);
                 let photoURL = `https://kwitter-api.herokuapp.com/users/${x.username}/picture`;
                 return (
                   <React.Fragment key={nanoid()}>
@@ -433,7 +384,7 @@ export const ProfileScreen = ({
                       photoLoc={photoURL}
                       message={x.text}
                       likesCount={x.likes.length}
-                      liked={truthy}
+                      liked={liked}
                     />
                     <Divider className={classes.divider} />
                   </React.Fragment>
