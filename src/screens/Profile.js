@@ -1,9 +1,9 @@
 import React, { useState, useEffect, createRef } from "react";
 
 import api from "../utils/api";
-import axios from "axios";
 import { nanoid } from "nanoid";
 
+import { AboutUser } from "../components/Card/AboutUser";
 import { AccountDialog } from "../components/Dialogs/AccountDialog";
 import { CardContainer } from "../components/Card";
 import { ChangedDialog } from "../components/Dialogs/ChangedDialog";
@@ -25,12 +25,9 @@ import { profileStyles } from "../hooks/profileStyles";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Typography from "@material-ui/core/Typography";
 
-import "./Profile.css";
-
 const fileInput = createRef();
 
 export const ProfileScreen = ({
-  isAuthenticated,
   addMessage,
   deleteMessage,
   userMessages,
@@ -42,7 +39,6 @@ export const ProfileScreen = ({
   likeUserMessage,
   unlikeUserMessage,
 }) => {
-
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -294,6 +290,17 @@ export const ProfileScreen = ({
     setDelOpener(true);
     handleMenuClose();
   };
+
+  const getGoogleId = () => {
+    let str = "";
+    if (user) {
+      str = user.googleId
+    } else {
+      str = "No Google ID found!"
+    }
+    return str;
+  }
+
   return (
     <>
       <MenuContainer />
@@ -320,6 +327,16 @@ export const ProfileScreen = ({
             <MenuItem onClick={changePassword}>Change Password</MenuItem>
             <MenuItem onClick={handleAccountDeletion}>Delete Account</MenuItem>
           </Menu>
+        {user ? <AboutUser
+            splitName={user.displayName.split(" ")[0]}
+            name={user.displayName}
+            username={user.username}
+            creationDate={user.createdAt}
+            lastUpdated={user.updatedAt}
+            googleId={getGoogleId()}
+            bio={user.about}
+          /> : null}
+          
           {uploadFailed && (
             <UploadDialog failed={uploadFailed} close={closeUpload} />
           )}
@@ -358,15 +375,17 @@ export const ProfileScreen = ({
             />
           )}
           <div>
-            {user ? <Typography variant="h1" className={classes.welcome}>
-          Welcome to Kwitter, {user.displayName.split(" ")[0]}!
-        </Typography> : null }
+            {user ? (
+              <Typography variant="h1" id="welcome">
+                Welcome to Kwitter, {user.displayName.split(" ")[0]}!
+              </Typography>
+            ) : null}
             {user ? userPic() : defaultPic()}
-            <Message submit={submitMsg} enter={enterMsg} handle={handleMsg} /> 
+            <Message submit={submitMsg} enter={enterMsg} handle={handleMsg} />
             <PhotoUpload file={fileInput} upload={uploadPhoto} />
             <br />
             <Divider />
-            <Typography variant="h3" id="friends">
+            <Typography variant="h3" id="user-posts">
               What you've talked about...
             </Typography>
             {users.messages &&

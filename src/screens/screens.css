@@ -1,6 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap");
+
 body {
   background-image: url("../utils/turtle-bg.jpg");
   background-attachment: fixed;
   background-size: 100vw;
-  overflow: hidden;
+}
+
+#welcome {
+  font-family: "Amatic SC", "Arial";
+  color: rgba(255, 255, 255, 0.521);
+  text-align: center;
+}
+
+#user-posts {
+  font-family: "Amatic SC", "Arial";
+  color: rgba(255, 255, 255, 0.521);
+  text-align: center;
 }

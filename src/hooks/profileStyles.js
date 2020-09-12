@@ -26,11 +26,6 @@ export const profileStyles = makeStyles((theme) => ({
       marginLeft: "39.5vw",
     },
   },
-  welcome: {
-    fontFamily: font,
-    color: "rgba(255, 255, 255, 0.521)",
-    textAlign: "center",
-  },
   large: {
     width: theme.spacing(25),
     height: theme.spacing(25),

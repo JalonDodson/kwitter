@@ -5,12 +5,11 @@ import { nanoid } from "nanoid";
 import { CardContainer } from "../components/Card";
 import { MenuContainer } from "../components";
 import { Message } from "../components/Forms/Message";
-
+import { TopLikes } from "../components/Card/TopLikes";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
 
 import { currentStyles } from "../hooks/currentStyles";
 
@@ -26,11 +25,21 @@ export const CurrentScreen = ({
   const classes = currentStyles();
   const [msg, setMsg] = useState("");
   const [currentNum, setCurrentNum] = useState(100);
+  const [topUser, setTopUser] = useState({
+    username: "",
+    likes: 0,
+    createdAt: "",
+    text: "",
+  })
 
   useEffect(() => {
     getMessages(currentNum);
     // eslint-disable-next-line
   }, [currentNum]);
+  
+  const getTopUser = () => {
+
+  }
 
   const enterMsg = async (ev) => {
     if (ev.key === "Enter") {
@@ -105,13 +114,13 @@ export const CurrentScreen = ({
     }
     return liked;
   };
-
   return (
     <>
       <MenuContainer />
       <div className={classes.root}>
         <Paper elevation={3} square={false}>
-      <Message submit={submitMsg} enter={enterMsg} handle={handleMsg} />     
+        <TopLikes />
+        <Message submit={submitMsg} enter={enterMsg} handle={handleMsg} />     
           <Divider />
           <Typography variant="h3" className={classes.friends}>
             What your friends are talking about...
@@ -130,7 +139,7 @@ export const CurrentScreen = ({
                       unlike={() => handleUnlike(x.id, x.likes)}
                       id={x.id}
                       key={nanoid()}
-                      displayName={x.displayName}
+                      displayName={x.username}
                       photoLoc={photoURL}
                       message={x.text}
                       likesCount={x.likes.length}
