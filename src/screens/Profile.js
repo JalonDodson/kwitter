@@ -128,7 +128,7 @@ export const ProfileScreen = ({
 
   const handleMsg = (ev) => {
     setMsg(ev.target.value);
-
+    
     ev.target.value = "";
   };
 
@@ -294,10 +294,28 @@ export const ProfileScreen = ({
   const getGoogleId = () => {
     let str = "";
     if (user) {
-      str = user.googleId
+      str = user.googleId;
     } else {
-      str = "No Google ID found!"
+      str = "No Google ID found!";
     }
+    return str;
+  };
+
+  const handleUpdated = () => {
+    let str = "";
+    let newDate = new Date(user.updatedAt);
+    let data = newDate.toString().split(" ");
+    str += `${data[0]} ${data[1]} ${data[2]} ${data[4]}`
+
+    return str;
+  };
+
+  const handleCreation = () => {
+    let str = "";
+    let newDate = new Date(user.createdAt);
+    let data = newDate.toString().split(" ");
+    str += `${data[0]} ${data[1]} ${data[2]} ${data[4]}`
+
     return str;
   }
 
@@ -327,16 +345,18 @@ export const ProfileScreen = ({
             <MenuItem onClick={changePassword}>Change Password</MenuItem>
             <MenuItem onClick={handleAccountDeletion}>Delete Account</MenuItem>
           </Menu>
-        {user ? <AboutUser
-            splitName={user.displayName.split(" ")[0]}
-            name={user.displayName}
-            username={user.username}
-            creationDate={user.createdAt}
-            lastUpdated={user.updatedAt}
-            googleId={getGoogleId()}
-            bio={user.about}
-          /> : null}
-          
+          {user ? (
+            <AboutUser
+              splitName={user.displayName.split(" ")[0]}
+              name={user.displayName}
+              username={user.username}
+              creationDate={handleCreation()}
+              lastUpdated={handleUpdated()}
+              googleId={getGoogleId()}
+              bio={user.about}
+            />
+          ) : null}
+
           {uploadFailed && (
             <UploadDialog failed={uploadFailed} close={closeUpload} />
           )}

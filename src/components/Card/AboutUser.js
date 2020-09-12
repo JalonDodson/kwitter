@@ -19,9 +19,9 @@ export const AboutUser = (props) => {
           <br />
           Username: {props.username}
           <br />
-          Account created on: {props.creationDate}
+          Member Since: {props.creationDate}
           <br />
-          Account last updated on: {props.lastUpdated}
+          Last Updated: {props.lastUpdated}
           <br />
           Google ID: {props.googleId}
           <br />

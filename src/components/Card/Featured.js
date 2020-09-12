@@ -6,13 +6,13 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
-export const TopLikes = (props) => {
+export const Featured = (props) => {
   const classes = topStyles();
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <Typography className={classes.title} color="textPrimary" gutterBottom>
-            Today's Top Post
+            Featured Post
         </Typography>
         <Typography variant="caption" color="textPrimary">
           Author: {props.author}
