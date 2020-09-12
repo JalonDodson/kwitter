@@ -62,4 +62,20 @@ export const menuStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  prof: {
+    marginRight: "-1vw"
+  },
+  curr: {
+    marginLeft: "1.5vw",
+    marginRight: "1.25vw",
+  },
+  music: {
+    marginLeft: "-40.25vw",
+  },
+  div1: {
+    marginLeft: "2.5vw",
+  },
+  div2: {    
+    marginRight: "42vw",
+  }
 }));

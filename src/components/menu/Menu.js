@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Menu.css";
 
@@ -7,18 +7,16 @@ import Menu from "@material-ui/core/Menu";
 import "fontsource-roboto";
 import AppBar from "@material-ui/core/AppBar";
 import Avatar from "@material-ui/core/Avatar";
+import Divider from "@material-ui/core/Divider";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
 import MenuItem from "@material-ui/core/MenuItem";
-import SearchIcon from "@material-ui/icons/Search";
 
 import { menuStyles } from "../../hooks/menuStyles";
 
 export const MenuBar = ({ isAuthenticated, logout, user, username }) => {
   // material-ui stuff
-  const [searchTerm, setSearchState] = useState("");
   const classes = menuStyles();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -32,21 +30,9 @@ export const MenuBar = ({ isAuthenticated, logout, user, username }) => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  // api stuff
-  const handleChange = (ev) => {
-    setSearchState(ev.target.value);
-  };
 
   const logMeOut = () => {
     logout();
-  };
-
-  const handleSearch = (ev) => {
-    if (ev.key === "Enter") {
-      console.log(searchTerm);
-      console.log(true);
-      ev.target.value = "";
-    }
   };
 
   const menuId = "primary-search-account-menu";
@@ -84,25 +70,27 @@ export const MenuBar = ({ isAuthenticated, logout, user, username }) => {
     <>
       <AppBar position="static" id="main-bar">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography className={classes.title} variant="h5" noWrap>
             Kwitter
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search Kwitter Users..."
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              onChange={handleChange}
-              onKeyDown={handleSearch}
-              inputProps={{ "aria-label": "search" }}
-            />
-          </div>
           <div className={classes.grow} />
+          <Link to="/">
+            <Typography className={classes.prof} variant="button" noWrap>
+              Profile
+            </Typography>
+          </Link>
+          <Divider orientation="vertical" flexItem className={classes.div1} />
+          <Link to="/thecurrent">
+            <Typography className={classes.curr} variant="button" noWrap>
+              The Current
+            </Typography>
+          </Link>
+          <Divider orientation="vertical" flexItem className={classes.div2} />
+          <Link onClick={() => alert("Feature not yet available!")}>
+            <Typography className={classes.music} variant="button" noWrap>
+              Music Player
+            </Typography>
+          </Link>
           <div className={classes.sectionDesktop}>
             <IconButton
               edge="end"
@@ -135,13 +123,6 @@ export const MenuBar = ({ isAuthenticated, logout, user, username }) => {
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
-        <MenuItem>
-          <Link to="/">Profile</Link>
-        </MenuItem>
-        {/* no, just refresh the page and then seelect the current from the account icon thing. wait*/}
-        <MenuItem>
-          <Link to="/thecurrent">The Current</Link>
-        </MenuItem>
         <MenuItem onClick={logMeOut}>Log Out</MenuItem>
       </Menu>
     </>
