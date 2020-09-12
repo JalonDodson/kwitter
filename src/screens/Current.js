@@ -5,7 +5,6 @@ import { nanoid } from "nanoid";
 import { CardContainer } from "../components/Card";
 import { MenuContainer } from "../components";
 import { Message } from "../components/Forms/Message";
-import { Featured } from "../components/Card/Featured";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
@@ -25,31 +24,10 @@ export const CurrentScreen = ({
   const classes = currentStyles();
   const [msg, setMsg] = useState("");
   const [currentNum, setCurrentNum] = useState(100);
-  const [featured, setFeatured] = useState({
-    username: "",
-    likes: 0,
-    createdAt: "",
-    text: "",
-  });
-
   useEffect(() => {
     getMessages(currentNum);
     // eslint-disable-next-line
   }, [currentNum]);
-
-  const getFeatured = () => {
-    const randNum = Math.floor(Math.random() * 50);
-    setFeatured({
-      username: all.messages[randNum].username,
-      likes: all.messages[randNum].likes,
-      createdAt: all.messages[randNum].createdAt,
-      text: all.messages[randNum].text,
-    });
-  };
-
-  useEffect(() => {
-    getFeatured();
-  }, []);
 
   const enterMsg = async (ev) => {
     if (ev.key === "Enter") {
@@ -125,36 +103,11 @@ export const CurrentScreen = ({
     return liked;
   };
 
-  const handleCreation = () => {
-    let str = "";
-    let newDate = new Date(featured.createdAt);
-    let data = newDate.toString().split(" ")[4];
-
-    let hours = 0;
-    let min = "";
-    let sec = "";
-    if (data) {
-      hours = Number(data.split(":")[0]) % 12;
-      min = data.split(":")[1];
-      sec = data.split(":")[2];
-    }
-
-    str += `${hours}:${min}:${sec}`;
-
-    return str;
-  };
-
   return (
     <>
       <MenuContainer />
       <div className={classes.root}>
         <Paper elevation={3} square={false}>
-          <Featured
-            author={featured.username}
-            time={handleCreation()}
-            likes={featured.likes.length}
-            message={featured.text}
-          />
           <Message submit={submitMsg} enter={enterMsg} handle={handleMsg} />
           <Divider />
           <Typography variant="h3" className={classes.friends}>

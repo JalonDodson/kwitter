@@ -6,8 +6,9 @@ export const userStyles = makeStyles({
       marginBottom: "-30vh",
       marginTop: "5vh",
       height: "25vh",
-      backgroundColor: "rgba(172, 168, 168, 0.15)",
-      borderRadius: "15px",
+      backgroundColor: "cyan",
+      opacity: .5,
+      borderRadius: "30px",
     },
     title: {
       fontSize: 14,
