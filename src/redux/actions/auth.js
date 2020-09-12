@@ -4,8 +4,6 @@ import api from "../../utils/api";
 export const LOGIN = "AUTH/LOGIN";
 export const LOGIN_SUCCESS = "AUTH/LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "AUTH/LOGIN_FAILURE";
-export const GOOGLE_LOGIN = "AUTH/GOOGLE_LOGIN";
-export const GOOGLE_SUCCESS = "AUTH/GOOGLE_SUCCESS";
 export const LOGOUT = "AUTH/LOGOUT";
 export const REGISTER = "AUTH/REGISTER";
 export const REGISTER_FAIL = "AUTH/REGISTER_FAIL";
@@ -31,17 +29,16 @@ export const login = (credentials) => async (dispatch, getState) => {
   }
 };
 
-// export const googleLogin = () => async (dispatch) => {
-//   try {
-//     dispatch({ type: GOOGLE_LOGIN });
-
-//     const payload = await api.googleLogin();
-//     console.log(payload);
-//     // dispatch ({ type: GOOGLE_SUCCESS, payload });
-//   } catch (err) {
-//     console.log(err)
-//   }
-// }
+export const googleLogin = (payload) => (dispatch) => {
+  try {
+    dispatch({ type: LOGIN_SUCCESS, payload });
+  } catch (err) {
+    dispatch({
+      type: LOGIN_FAILURE,
+      payload: err.message,
+    });
+  }
+};
 
 export const logout = () => async (dispatch, getState) => {
   try {
@@ -49,7 +46,7 @@ export const logout = () => async (dispatch, getState) => {
     // as long as it succeeds
     await api.logout();
   } catch (err) {
-      console.log(err.message);
+    console.log(err.message);
   } finally {
     /**
      * Let the reducer know that we are logged out
@@ -62,7 +59,7 @@ export const register = (credentials) => async (dispatch, getState) => {
   try {
     dispatch({ type: REGISTER });
     const payload = await api.register(credentials);
-    console.log({ payload })
+    console.log({ payload });
     // ℹ️ℹ️This is how you woud debug the response to a requestℹ️ℹ️
     // console.log({ result })
     dispatch({ type: REGISTER_SUCCESS, payload });

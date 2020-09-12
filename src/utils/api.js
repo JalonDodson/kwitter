@@ -52,29 +52,6 @@ class API {
     }
   }
 
-  async googleLogin() {
-    try {
-      const response = await this.axiosInstance.get(`/auth/google/login`)
-      console.log(response)
-    } catch (err) {
-      helpMeInstructor(err);
-      return err;
-    }
-  }
-
-  async googleCallback({ code, scope }) {
-    try {
-      const res = await this.axiosInstance.get(
-        `/auth/google/callback?code=${code}&scope=${scope}`
-      );
-      console.log(res);
-      return res;
-    } catch (err) {
-      helpMeInstructor(err);
-      console.log(err);
-    }
-  }
-
   async register({ username, displayName, password }) {
     try {
       const result = await this.axiosInstance.post("/users", {

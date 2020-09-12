@@ -30,6 +30,7 @@ import { DeleteDialog } from "../components/Dialogs/DeleteDialog";
 const fileInput = createRef();
 
 export const ProfileScreen = ({
+  isAuthenticated,
   addMessage,
   deleteMessage,
   userMessages,
@@ -63,13 +64,13 @@ export const ProfileScreen = ({
   }, [user]);
 
   const getPhoto = (username) => {
-    const photo =
-      user.pictureLocation !== null
+    return user
+      ? user.pictureLocation
         ? `https://kwitter-api.herokuapp.com/users/${username}/picture?t=${user.pictureLocation
             .split("?t=")
             .pop()}`
-        : null;
-    return photo;
+        : null
+      : null;
   };
 
   const updatePhoto = () => {
@@ -112,21 +113,21 @@ export const ProfileScreen = ({
   };
 
   const userPic = () => {
-    return (
+    return user ? (
       <Avatar
         className={classes.largeAvi}
         alt={user.displayName}
         src={updatePhoto()}
       ></Avatar>
-    );
+    ) : null;
   };
 
   const defaultPic = () => {
-    return (
+    return user ? (
       <Avatar className={classes.large}>
         {user.displayName[0].toUpperCase()}
       </Avatar>
-    );
+    ) : null;
   };
 
   const handleMsg = (ev) => {
@@ -214,11 +215,16 @@ export const ProfileScreen = ({
   const [name, setName] = useState("");
 
   const greeting = () => {
-    return (
-      <Typography variant="h1" id="welcome">
-        Welcome to Kwitter, {user.displayName}!
-      </Typography>
-    );
+    if (isAuthenticated && user) {
+      console.log(user);
+      return (
+        <Typography variant="h1" id="welcome">
+          Welcome to Kwitter, {user.displayName}!
+        </Typography>
+      );
+    } else {
+      return null;
+    }
   };
 
   const handleAccChange = () => {
@@ -370,7 +376,7 @@ export const ProfileScreen = ({
           <div>
             {greeting()}
 
-            {user.pictureLocation !== null ? userPic() : defaultPic()}
+            {user ? userPic() : defaultPic()}
             <form onSubmit={submitMsg}>
               <TextField
                 label="What's on your mind?"

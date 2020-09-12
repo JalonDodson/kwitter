@@ -56,14 +56,15 @@ export const MenuBar = ({ isAuthenticated, logout, user, username }) => {
     updatePhoto();
     // eslint-disable-next-line
   }, [user]);
-  
+
   const getPhoto = (username) => {
-    const photo = (user
-      ? `https://kwitter-api.herokuapp.com/users/${username}/picture?t=${user.pictureLocation
-          .split("?t=")
-          .pop()}`
-      : null);
-    return photo;
+    return user
+      ? user.pictureLocation
+        ? `https://kwitter-api.herokuapp.com/users/${username}/picture?t=${user.pictureLocation
+            .split("?t=")
+            .pop()}`
+        : null
+      : null;
   };
 
   const updatePhoto = () => {
@@ -111,14 +112,16 @@ export const MenuBar = ({ isAuthenticated, logout, user, username }) => {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              {user.pictureLocation !== null ? (
-                <Avatar
-                  alt={user.displayName}
-                  src={updatePhoto(username)}
-                ></Avatar>
-              ) : (
-                <Avatar>{user.displayName[0].toUpperCase()}</Avatar>
-              )}
+              {user ? (
+                user.pictureLocation ? (
+                  <Avatar
+                    alt={user.displayName}
+                    src={updatePhoto(username)}
+                  ></Avatar>
+                ) : (
+                  <Avatar>{user.displayName[0].toUpperCase()}</Avatar>
+                )
+              ) : null}
             </IconButton>
           </div>
         </Toolbar>

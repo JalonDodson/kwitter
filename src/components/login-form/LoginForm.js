@@ -1,56 +1,57 @@
 import React, { useState } from "react";
 import ProptTypes from "prop-types";
-import "./LoginForm.css";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import Typography from "@material-ui/core/Typography";
-import axios from "axios";
-import api from "../../utils/api";
+import { loginStyles } from "../../hooks/loginStyles";
+import { Login } from "../Forms/Login";
+import { Register } from "../Forms/Register";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  loginFail: {
-    color: "red",
-  },
-  google: {
-    width: "100%",
-  },
-}));
+export const LoginForm = ({
+  login,
+  googleLogin,
+  loading,
+  error,
+  register,
+  getUser,
+}) => {
+  const classes = loginStyles();
 
-export const LoginForm = ({ login, loading, error, register, getUser }) => {
-  // material-ui stuff
+  const [called, setCalled] = useState(false);
   const [failure, setFailure] = useState(false);
-  const classes = useStyles();
-  // end of material-ui stuff
-
-  // Not to be confused with "this.setState" in classes
+  const [isRegister, setRegister] = useState(false);
+  const [userRegistered, setUserRegistered] = useState(false);
   const [state, setState] = useState({
     username: "",
     password: "",
   });
-  console.log(window.location.origin);
+
   const [newUser, setNewUser] = useState({
     username: "",
     displayName: "",
     password: "",
   });
 
-  const [isRegister, setRegister] = useState(false);
-  const [userRegistered, setUserRegistered] = useState(false);
-  const [called, setCalled] = useState(false);
+  const handleChange = (event) => {
+    const inputName = event.target.name;
+    const inputValue = event.target.value;
+    setState((prevState) => ({ ...prevState, [inputName]: inputValue }));
+  };
 
-  const handleSetRegister = (ev) => {
-    ev.preventDefault();
-    setRegister(true);
+  const handleGoogle = async () => {
+    const login = window.open(
+      "https://kwitter-api.herokuapp.com/auth/google/login",
+      "_blank",
+      "height=777, width=777, scrollbar=0",
+      false
+    );
+    login.opener.onmessage = (event) => {
+      if (event.data.token) {
+        const credentials = event.data;
+        const { username } = event.data;
+        getUser(username);
+        googleLogin(credentials);
+        login.close();
+      }
+    };
   };
 
   const handleLogin = (event) => {
@@ -71,6 +72,12 @@ export const LoginForm = ({ login, loading, error, register, getUser }) => {
     }
   };
 
+  const handleNew = (event) => {
+    const inputName = event.target.name;
+    const inputValue = event.target.value;
+    setNewUser((prevState) => ({ ...prevState, [inputName]: inputValue }));
+  };
+
   const handleRegister = (event) => {
     event.preventDefault();
 
@@ -86,180 +93,42 @@ export const LoginForm = ({ login, loading, error, register, getUser }) => {
     });
   };
 
-  const handleRegistration = (event) => {
-    const inputName = event.target.name;
-    const inputValue = event.target.value;
-    setNewUser((prevState) => ({ ...prevState, [inputName]: inputValue }));
-  };
-
-  const handleChange = (event) => {
-    const inputName = event.target.name;
-    const inputValue = event.target.value;
-    setState((prevState) => ({ ...prevState, [inputName]: inputValue }));
-  };
-
-  const handleGoogle = async () => {
-    const payload = await api.googleLogin();
-    return payload;
+  const handleSetRegister = (ev) => {
+    ev.preventDefault();
+    setRegister(true);
   };
 
   return !isRegister ? (
     <>
       <img
-        src={require("../../utils/logo.png")}
-        id="k-logo"
         alt="Kwitter logo"
+        className={classes.logo}
+        src={require("../../utils/logo.png")}
       />
-      <form className={classes.root} id="login-form" onSubmit={handleLogin}>
-        <div id="inputs">
-          {userRegistered ? (
-            <Typography
-              variant="overline"
-              id="success"
-              className={classes.root}
-            >
-              You have successfully registered. Please sign in!
-            </Typography>
-          ) : null}
-          {failure && (
-            <Typography
-              variant="overline"
-              id="login-fail"
-              className={classes.loginFail}
-            >
-              You have entered the incorrect username or password, please try
-              again!
-            </Typography>
-          )}
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="component-outlined">Username</InputLabel>
-            <OutlinedInput
-              error={failure}
-              type="text"
-              name="username"
-              autoFocus
-              required
-              className="component-outlined"
-              value={state.username}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="component-outlined">Password</InputLabel>
-            <OutlinedInput
-              error={failure}
-              type="password"
-              name="password"
-              required
-              className="component-outlined"
-              value={state.password}
-              onChange={handleChange}
-            />
-          </FormControl>
-        </div>
-        <div id="btns">
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            id="login-btn"
-            disabled={loading}
-          >
-            Login
-          </Button>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            id="register-btn"
-            disabled={loading}
-            onClick={handleSetRegister}
-          >
-            Register
-          </Button>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            className={classes.google}
-            onClick={handleGoogle}
-          >
-            Login with Google
-          </Button>
-        </div>
-        <Typography
-          variant="overline"
-          display="block"
-          id="forgot"
-          className={classes.root}
-        >
-          FORGOT PASSWORD?
-        </Typography>
-        {loading && <CircularProgress id="loading" />}
-      </form>
-
+      <Login
+        registered={userRegistered}
+        failure={failure}
+        login={handleLogin}
+        change={handleChange}
+        username={state.username}
+        password={state.password}
+        loading={loading}
+        setRegister={handleSetRegister}
+        google={handleGoogle}
+      />
       {error && <p style={{ color: "red" }}>{error.message}</p>}
     </>
   ) : (
     <>
-      <form className={classes.root} id="login-form" onSubmit={handleRegister}>
-        <div id="inputs">
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="component-outlined">Username</InputLabel>
-            <OutlinedInput
-              type="text"
-              name="username"
-              autoFocus
-              required
-              className="component-outlined"
-              value={newUser.username}
-              onChange={handleRegistration}
-            />
-          </FormControl>
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="component-outlined">Display Name</InputLabel>
-            <OutlinedInput
-              type="displayName"
-              name="displayName"
-              required
-              className="component-outlined"
-              value={newUser.displayName}
-              onChange={handleRegistration}
-            />
-          </FormControl>
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="component-outlined">Password</InputLabel>
-            <OutlinedInput
-              type="password"
-              name="password"
-              required
-              className="component-outlined"
-              value={newUser.password}
-              onChange={handleRegistration}
-            />
-          </FormControl>
-        </div>
-        <div id="btns">
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            id="registration"
-          >
-            Register
-          </Button>
-        </div>
-        <Typography
-          variant="overline"
-          display="block"
-          id="forgot"
-          className={classes.root}
-        >
-          FORGOT PASSWORD?
-        </Typography>
-        {loading && <CircularProgress id="loading" />}
-      </form>
-
+      <Register
+        register={handleRegister}
+        newUser={newUser.username}
+        displayName={newUser.displayName}
+        password={newUser.password}
+        handleNew={handleNew}
+        loading={loading}
+        disableRegister={() => setRegister(false)}
+      />
       {error && <p style={{ color: "red" }}>{error.message}</p>}
     </>
   );
