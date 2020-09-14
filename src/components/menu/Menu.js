@@ -86,9 +86,9 @@ export const MenuBar = ({ isAuthenticated, logout, user, username }) => {
             </Typography>
           </Link>
           <Divider orientation="vertical" flexItem className={classes.div2} />
-          <Link onClick={() => alert("Feature not yet available!")}>
+          <Link to="/streamplayer">
             <Typography className={classes.music} variant="button" noWrap>
-              Music Player
+              Play A Song
             </Typography>
           </Link>
           <div className={classes.sectionDesktop}>
