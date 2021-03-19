@@ -4,6 +4,7 @@ import ProptTypes from "prop-types";
 import { loginStyles } from "../../hooks/loginStyles";
 import { Login } from "../Forms/Login";
 import { Register } from "../Forms/Register";
+import logo from "../../utils/logo.png";
 
 export const LoginForm = ({
   login,
@@ -14,7 +15,6 @@ export const LoginForm = ({
   getUser,
 }) => {
   const classes = loginStyles();
-
   const [called, setCalled] = useState(false);
   const [failure, setFailure] = useState(false);
   const [isRegister, setRegister] = useState(false);
@@ -103,7 +103,7 @@ export const LoginForm = ({
       <img
         alt="Kwitter logo"
         className={classes.logo}
-        src={require("../../utils/logo.png")}
+        src={logo}
       />
       <Login
         registered={userRegistered}
