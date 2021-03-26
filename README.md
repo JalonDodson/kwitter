@@ -28,3 +28,7 @@ Kwitter is a micro-blogging platform that utilizes React.js, built for a school 
  - Assisted with music playing, profile page and likes feature
 - Lawrence Smith
  - Assisted with The Current, and likes feature
+
+## Live Deployment
+- Heroku
+ - http://cjlw-kwitter.herokuapp.com/
