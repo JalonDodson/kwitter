@@ -16,18 +16,18 @@ Kwitter is a micro-blogging platform that utilizes React.js, built for a school 
 
 ## Developers
 - Jalon Dodson
- - such as posting and post features, account creation, Google auth, music playing, account management and overall styling.
- - Post-related features
- - Account creation and management
- - Google Authentication
- - Music playing
- - General styling/Material UI management
+  - such as posting and post features, account creation, Google auth, music playing, account management and overall styling.
+  - Post-related features
+  - Account creation and management
+  - Google Authentication
+  - Music playing
+  - General styling/Material UI management
 - Willie Davis
- - Profile page, assisted with user info section
+  - Profile page, assisted with user info section
 - Chip Pickering
- - Assisted with music playing, profile page and likes feature
+  - Assisted with music playing, profile page and likes feature
 - Lawrence Smith
- - Assisted with The Current, and likes feature
+  - Assisted with The Current, and likes feature
 
 ## Live Deployment
 - Heroku
