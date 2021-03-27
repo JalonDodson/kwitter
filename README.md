@@ -22,7 +22,7 @@ Kwitter is a micro-blogging platform that utilizes React.js, built for a school 
   - Google Authentication
   - Music playing
   - General styling/Material UI management
-- Willie Davis
+- Will Douglas
   - Profile page, assisted with user info section
 - Chip Pickering
   - Assisted with music playing, profile page and likes feature
